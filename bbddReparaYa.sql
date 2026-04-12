@@ -97,6 +97,7 @@ INSERT INTO especialidades (nombre_especialidad) VALUES
 ('Fontanería'),
 ('Electricidad'),
 ('Aire acondicionado');
+('Bricolaje');
 
 INSERT INTO estados (nombre_estado) VALUES
 ('Pendiente'),
@@ -109,7 +110,7 @@ INSERT INTO estados (nombre_estado) VALUES
 -- =========================
 INSERT INTO tecnicos (usuario_id, nombre_completo, especialidad_id, disponible)
 VALUES (
-    (SELECT id FROM usuarios WHERE email = 'tecnico@test.com'),
+    (SELECT id FROM usuarios WHERE email = 'tecnico@uoc.com'),
     'Tecnico Test',
     1,
     TRUE

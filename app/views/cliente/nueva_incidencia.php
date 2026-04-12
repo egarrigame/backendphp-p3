@@ -38,8 +38,8 @@
                 <label class="form-label">Tipo de urgencia</label>
                 <select name="tipo_urgencia" class="form-control" required>
                     <option value="">Selecciona una opción</option>
-                    <option value="estandar">Estándar</option>
-                    <option value="urgente">Urgente</option>
+                    <option value="Estándar">Estándar</option>
+                    <option value="Urgente">Urgente</option>
                 </select>
             </div>
 
