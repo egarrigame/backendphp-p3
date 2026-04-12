@@ -32,6 +32,7 @@ class AuthController extends Controller
         $email = trim($_POST['email'] ?? '');
         $password = trim($_POST['password'] ?? '');
 
+        // Validación
         if (empty($email) || empty($password)) {
             $_SESSION['error'] = 'Todos los campos son obligatorios';
             $this->redirect('/login');
@@ -49,6 +50,7 @@ class AuthController extends Controller
             $this->redirect('/login');
         }
 
+        // Sesión
         $_SESSION['user'] = [
             'id' => $user['id'],
             'nombre' => $user['nombre'],
@@ -56,14 +58,16 @@ class AuthController extends Controller
             'rol' => $user['rol']
         ];
 
-        switch ($user['rol']) {
-            case 'admin':
-                $this->redirect('/admin/dashboard');
-            case 'tecnico':
-                $this->redirect('/tecnico/agenda');
-            default:
-                $this->redirect('/cliente/dashboard');
+        // Redirección por rol
+        if ($user['rol'] === 'admin') {
+            $this->redirect('/admin/dashboard');
         }
+
+        if ($user['rol'] === 'tecnico') {
+            $this->redirect('/tecnico/agenda');
+        }
+
+        $this->redirect('/cliente/dashboard');
     }
 
     public function showRegister(): void
@@ -122,9 +126,14 @@ class AuthController extends Controller
 
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
             );
         }
 

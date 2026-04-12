@@ -39,6 +39,12 @@
             </select>
         </div>
 
+        <!-- 🔥 AÑADIDO (REQUERIDO POR RÚBRICA) -->
+        <div class="mb-3">
+            <label class="form-label">Teléfono de contacto</label>
+            <input type="text" name="telefono" class="form-control" required>
+        </div>
+
         <div class="mb-3">
             <label class="form-label">Descripción</label>
             <textarea name="descripcion" class="form-control" required></textarea>
@@ -56,7 +62,7 @@
 
         <div class="mb-3">
             <label class="form-label">Tipo de servicio</label>
-            <select name="tipo_urgencia" class="form-select">
+            <select name="tipo_urgencia" class="form-select" required>
                 <option value="Estándar">Estándar</option>
                 <option value="Urgente">Urgente</option>
             </select>

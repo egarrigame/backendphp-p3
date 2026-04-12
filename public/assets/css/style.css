@@ -1,68 +1,166 @@
+/* ===== RESET BASE ===== */
 body {
-    background-color: #f8f9fa;
+    background-color: #f5f7fb;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #2c3e50;
 }
 
-/* Layout */
+/* ===== LAYOUT ===== */
 .container {
     max-width: 1100px;
 }
 
-/* Títulos */
-h1, h2 {
+/* ===== TIPOGRAFÍA ===== */
+h1, h2, h3 {
     font-weight: 600;
-}
-
-/* Navbar */
-.navbar {
+    color: #1e293b;
     margin-bottom: 20px;
 }
 
-/* Tablas */
-.table {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
+/* ===== NAVBAR ===== */
+.navbar {
+    background: linear-gradient(90deg, #0f172a, #1e293b);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-/* Botones */
-.btn {
-    border-radius: 6px;
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
     transition: 0.2s;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
+}
+
+/* ===== CARDS ===== */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    padding: 15px;
+}
+
+/* ===== TABLAS ===== */
+.table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.table th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: #334155;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* ===== BOTONES ===== */
+.btn {
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
 }
 
 .btn:hover {
-    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Cards */
-.card {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-/* Inputs */
-.form-control {
-    border-radius: 6px;
-}
-
-/* Alerts */
-.alert {
-    border-radius: 6px;
-}
-
-/* Calendario */
-#calendario .col-md-2 {
-    background: white;
-    border-radius: 6px;
+/* ===== FORMULARIOS ===== */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 10px;
     transition: 0.2s;
 }
 
+.form-control:focus,
+.form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.15);
+}
+
+/* ===== ALERTAS ===== */
+.alert {
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+/* ===== BADGES ===== */
+.badge {
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+/* ===== CALENDARIO ===== */
+#calendario .col-md-2 {
+    background: white;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+}
+
 #calendario .col-md-2:hover {
-    transform: scale(1.02);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
 }
 
 #calendario strong {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
+    color: #334155;
+}
+
+/* EVENTOS */
+#calendario div div {
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
+/* ===== UTILIDADES ===== */
+.text-muted {
+    color: #64748b !important;
+}
+
+/* ===== ESPACIADO GENERAL ===== */
+.mt-4 {
+    margin-top: 30px !important;
+}
+
+/* ===== EVENTOS ===== */
+
+.evento-calendario {
+    transition: all 0.2s ease;
+}
+
+.evento-calendario:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.modal-content {
+    border-radius: 12px;
+    animation: scaleIn 0.2s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

@@ -29,14 +29,29 @@ class IncidenciaController extends Controller
         }
 
         $fecha = $_POST['fecha_servicio'] ?? '';
-        $tipo = $_POST['tipo_urgencia'] ?? '';
 
-        if (empty($fecha) || empty($tipo)) {
+        // Se asegura que el formulario no rompa para el nuevo usuario por la tilde en estándar
+        $mapUrgencia = [
+            'estandar' => 'Estándar',
+            'urgente' => 'Urgente'
+        ];
+
+        $tipoInput = $_POST['tipo_urgencia'] ?? '';
+        $tipo = $mapUrgencia[$tipoInput] ?? '';
+
+        // VALIDACIÓN BÁSICA
+        if (
+            empty($fecha) ||
+            empty($tipo) ||
+            empty($_POST['especialidad_id']) ||
+            empty($_POST['descripcion']) ||
+            empty($_POST['direccion'])
+        ) {
             $_SESSION['error'] = 'Todos los campos son obligatorios';
             $this->redirect('/cliente/nueva-incidencia');
         }
 
-        // Regla 48h
+        // REGLA 48h SOLO PARA ESTÁNDAR
         if ($tipo === 'Estándar') {
             $fechaServicio = new DateTime($fecha);
             $ahora = new DateTime();

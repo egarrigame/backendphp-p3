@@ -7,45 +7,77 @@ require_once __DIR__ . '/../models/Especialidad.php';
 
 class EspecialidadController extends Controller
 {
+    private Especialidad $especialidadModel;
+
+    public function __construct()
+    {
+        $this->especialidadModel = new Especialidad();
+    }
+
     public function index(): void
     {
         $this->requireAuth();
 
-        if ($_SESSION['user']['rol'] !== 'admin') {
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
             die('Acceso no autorizado');
         }
 
-        $model = new Especialidad();
-
-        $especialidades = $model->fetchAll("SELECT * FROM especialidades");
+        $especialidades = $this->especialidadModel->getAll();
 
         $this->render('admin/especialidades', [
             'especialidades' => $especialidades
         ]);
     }
 
+    public function create(): void
+    {
+        $this->requireAuth();
+
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
+            die('Acceso no autorizado');
+        }
+
+        $this->redirect('/especialidades');
+    }
+
     public function store(): void
     {
         $this->requireAuth();
 
-        $nombre = trim($_POST['nombre_especialidad'] ?? '');
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
+            die('Acceso no autorizado');
+        }
 
-        if (empty($nombre)) {
-            $_SESSION['error'] = 'El nombre es obligatorio';
+        if (!$this->isPost()) {
             $this->redirect('/especialidades');
         }
 
-        $model = new Especialidad();
+        $nombre = trim($_POST['nombre_especialidad'] ?? '');
 
-        $ok = $model->execute(
-            "INSERT INTO especialidades (nombre_especialidad) VALUES (:nombre)",
-            ['nombre' => $nombre]
-        );
+        if ($nombre === '') {
+            $_SESSION['error'] = 'El nombre de la especialidad es obligatorio';
+            $this->redirect('/especialidades');
+        }
+
+        $ok = $this->especialidadModel->create([
+            'nombre_especialidad' => $nombre
+        ]);
 
         if (!$ok) {
-            $_SESSION['error'] = 'Error al crear especialidad';
-        } else {
-            $_SESSION['success'] = 'Especialidad creada correctamente';
+            $_SESSION['error'] = 'No se pudo crear la especialidad';
+            $this->redirect('/especialidades');
+        }
+
+        $_SESSION['success'] = 'Especialidad creada correctamente';
+        $this->redirect('/especialidades');
+    }
+
+    public function edit(): void
+    {
+        $this->requireAuth();
+
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
+            die('Acceso no autorizado');
         }
 
         $this->redirect('/especialidades');
@@ -55,32 +87,32 @@ class EspecialidadController extends Controller
     {
         $this->requireAuth();
 
-        $id = (int)($_POST['id'] ?? 0);
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
+            die('Acceso no autorizado');
+        }
+
+        if (!$this->isPost()) {
+            $this->redirect('/especialidades');
+        }
+
+        $id = (int) ($_POST['id'] ?? 0);
         $nombre = trim($_POST['nombre_especialidad'] ?? '');
 
-        if ($id <= 0 || empty($nombre)) {
+        if ($id <= 0 || $nombre === '') {
             $_SESSION['error'] = 'Datos inválidos';
             $this->redirect('/especialidades');
         }
 
-        $model = new Especialidad();
-
-        $ok = $model->execute(
-            "UPDATE especialidades 
-             SET nombre_especialidad = :nombre 
-             WHERE id = :id",
-            [
-                'id' => $id,
-                'nombre' => $nombre
-            ]
-        );
+        $ok = $this->especialidadModel->update($id, [
+            'nombre_especialidad' => $nombre
+        ]);
 
         if (!$ok) {
-            $_SESSION['error'] = 'Error al actualizar';
-        } else {
-            $_SESSION['success'] = 'Especialidad actualizada';
+            $_SESSION['error'] = 'No se pudo actualizar la especialidad';
+            $this->redirect('/especialidades');
         }
 
+        $_SESSION['success'] = 'Especialidad actualizada correctamente';
         $this->redirect('/especialidades');
     }
 
@@ -88,26 +120,29 @@ class EspecialidadController extends Controller
     {
         $this->requireAuth();
 
-        $id = (int)($_POST['id'] ?? 0);
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
+            die('Acceso no autorizado');
+        }
+
+        if (!$this->isPost()) {
+            $this->redirect('/especialidades');
+        }
+
+        $id = (int) ($_POST['id'] ?? 0);
 
         if ($id <= 0) {
             $_SESSION['error'] = 'ID inválido';
             $this->redirect('/especialidades');
         }
 
-        $model = new Especialidad();
-
-        $ok = $model->execute(
-            "DELETE FROM especialidades WHERE id = :id",
-            ['id' => $id]
-        );
+        $ok = $this->especialidadModel->delete($id);
 
         if (!$ok) {
-            $_SESSION['error'] = 'Error al eliminar';
-        } else {
-            $_SESSION['success'] = 'Especialidad eliminada';
+            $_SESSION['error'] = 'No se pudo eliminar la especialidad';
+            $this->redirect('/especialidades');
         }
 
+        $_SESSION['success'] = 'Especialidad eliminada correctamente';
         $this->redirect('/especialidades');
     }
 }

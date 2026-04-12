@@ -8,19 +8,25 @@ require_once __DIR__ . '/../models/Especialidad.php';
 
 class TecnicoController extends Controller
 {
+    private Tecnico $tecnicoModel;
+    private Especialidad $especialidadModel;
+
+    public function __construct()
+    {
+        $this->tecnicoModel = new Tecnico();
+        $this->especialidadModel = new Especialidad();
+    }
+
     public function index(): void
     {
         $this->requireAuth();
 
-        if ($_SESSION['user']['rol'] !== 'admin') {
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
             die('Acceso no autorizado');
         }
 
-        $tecnicoModel = new Tecnico();
-        $especialidadModel = new Especialidad();
-
-        $tecnicos = $tecnicoModel->getAll();
-        $especialidades = $especialidadModel->fetchAll("SELECT * FROM especialidades");
+        $tecnicos = $this->tecnicoModel->getAll();
+        $especialidades = $this->especialidadModel->getAll();
 
         $this->render('admin/tecnicos', [
             'tecnicos' => $tecnicos,
@@ -32,24 +38,33 @@ class TecnicoController extends Controller
     {
         $this->requireAuth();
 
-        $nombre = trim($_POST['nombre_completo'] ?? '');
-        $especialidad_id = (int)($_POST['especialidad_id'] ?? 0);
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
+            die('Acceso no autorizado');
+        }
 
-        if (empty($nombre) || $especialidad_id <= 0) {
+        if (!$this->isPost()) {
+            $this->redirect('/tecnicos');
+        }
+
+        $nombre = trim($_POST['nombre_completo'] ?? '');
+        $especialidad_id = (int) ($_POST['especialidad_id'] ?? 0);
+
+        if ($nombre === '' || $especialidad_id <= 0) {
             $_SESSION['error'] = 'Datos inválidos';
             $this->redirect('/tecnicos');
         }
 
-        $model = new Tecnico();
-
-        $ok = $model->create([
+        $ok = $this->tecnicoModel->create([
             'nombre_completo' => $nombre,
             'especialidad_id' => $especialidad_id
         ]);
 
-        $_SESSION[$ok ? 'success' : 'error'] =
-            $ok ? 'Técnico creado' : 'Error al crear técnico';
+        if (!$ok) {
+            $_SESSION['error'] = 'No se pudo crear el técnico';
+            $this->redirect('/tecnicos');
+        }
 
+        $_SESSION['success'] = 'Técnico creado correctamente';
         $this->redirect('/tecnicos');
     }
 
@@ -57,18 +72,34 @@ class TecnicoController extends Controller
     {
         $this->requireAuth();
 
-        $id = (int)$_POST['id'];
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
+            die('Acceso no autorizado');
+        }
 
-        $model = new Tecnico();
+        if (!$this->isPost()) {
+            $this->redirect('/tecnicos');
+        }
 
-        $ok = $model->update($id, [
-            'especialidad_id' => $_POST['especialidad_id'],
-            'disponible' => $_POST['disponible']
+        $id = (int) ($_POST['id'] ?? 0);
+        $especialidad_id = (int) ($_POST['especialidad_id'] ?? 0);
+        $disponible = (int) ($_POST['disponible'] ?? 1);
+
+        if ($id <= 0) {
+            $_SESSION['error'] = 'ID inválido';
+            $this->redirect('/tecnicos');
+        }
+
+        $ok = $this->tecnicoModel->update($id, [
+            'especialidad_id' => $especialidad_id,
+            'disponible' => $disponible
         ]);
 
-        $_SESSION[$ok ? 'success' : 'error'] =
-            $ok ? 'Actualizado' : 'Error al actualizar';
+        if (!$ok) {
+            $_SESSION['error'] = 'No se pudo actualizar el técnico';
+            $this->redirect('/tecnicos');
+        }
 
+        $_SESSION['success'] = 'Técnico actualizado correctamente';
         $this->redirect('/tecnicos');
     }
 
@@ -76,57 +107,50 @@ class TecnicoController extends Controller
     {
         $this->requireAuth();
 
-        $id = (int)$_POST['id'];
+        if (($_SESSION['user']['rol'] ?? '') !== 'admin') {
+            die('Acceso no autorizado');
+        }
 
-        $model = new Tecnico();
+        if (!$this->isPost()) {
+            $this->redirect('/tecnicos');
+        }
 
-        $ok = $model->delete($id);
+        $id = (int) ($_POST['id'] ?? 0);
 
-        $_SESSION[$ok ? 'success' : 'error'] =
-            $ok ? 'Eliminado' : 'Error al eliminar';
+        if ($id <= 0) {
+            $_SESSION['error'] = 'ID inválido';
+            $this->redirect('/tecnicos');
+        }
 
+        $ok = $this->tecnicoModel->delete($id);
+
+        if (!$ok) {
+            $_SESSION['error'] = 'No se pudo eliminar el técnico';
+            $this->redirect('/tecnicos');
+        }
+
+        $_SESSION['success'] = 'Técnico eliminado correctamente';
         $this->redirect('/tecnicos');
     }
 
-public function agenda(): void
-{
-    $this->requireAuth();
+    public function agenda(): void
+    {
+        $this->requireAuth();
 
-    if ($_SESSION['user']['rol'] !== 'tecnico') {
-        die('Acceso no autorizado');
+        if (($_SESSION['user']['rol'] ?? '') !== 'tecnico') {
+            die('Acceso no autorizado');
+        }
+
+        $tecnico = $this->tecnicoModel->findByUsuarioId($_SESSION['user']['id']);
+
+        if (!$tecnico) {
+            die('No se encontró técnico asociado');
+        }
+
+        $incidencias = $this->tecnicoModel->getAgenda($tecnico['id']);
+
+        $this->render('tecnico/agenda', [
+            'incidencias' => $incidencias
+        ]);
     }
-
-    $tecnicoModel = new Tecnico();
-    $incidenciaModel = new Incidencia();
-
-    // Obtener el técnico asociado al usuario
-    $tecnico = $tecnicoModel->fetch(
-        "SELECT id FROM tecnicos WHERE usuario_id = :user_id",
-        ['user_id' => $_SESSION['user']['id']]
-    );
-
-    if (!$tecnico) {
-        $this->render('tecnico/agenda', ['incidencias' => []]);
-        return;
-    }
-
-    $incidencias = $incidenciaModel->fetchAll(
-        "SELECT 
-            i.*,
-            u.nombre AS cliente_nombre,
-            e.nombre_especialidad,
-            es.nombre_estado
-         FROM incidencias i
-         JOIN usuarios u ON i.cliente_id = u.id
-         JOIN especialidades e ON i.especialidad_id = e.id
-         JOIN estados es ON i.estado_id = es.id
-         WHERE i.tecnico_id = :tecnico_id
-         ORDER BY i.fecha_servicio ASC",
-        ['tecnico_id' => $tecnico['id']]
-    );
-
-    $this->render('tecnico/agenda', [
-        'incidencias' => $incidencias
-    ]);
-}
 }

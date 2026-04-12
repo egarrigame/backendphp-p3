@@ -18,7 +18,7 @@ CREATE TABLE especialidades (
     nombre_especialidad VARCHAR(50) NOT NULL
 );
 
--- 3. ESTADOS (ampliación)
+-- 3. ESTADOS
 CREATE TABLE estados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre_estado VARCHAR(50) NOT NULL
@@ -35,7 +35,7 @@ CREATE TABLE tecnicos (
     FOREIGN KEY (especialidad_id) REFERENCES especialidades(id)
 );
 
--- 5. INCIDENCIAS (sin ENUM)
+-- 5. INCIDENCIAS
 CREATE TABLE incidencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     localizador VARCHAR(12) NOT NULL UNIQUE,
@@ -58,19 +58,39 @@ CREATE TABLE incidencias (
 CREATE INDEX idx_cliente ON incidencias(cliente_id);
 CREATE INDEX idx_tecnico ON incidencias(tecnico_id);
 
--- datos iniciales
+-- =========================
+-- DATOS INICIALES
+-- =========================
 
-INSERT INTO usuarios (nombre, email, password, rol)
-VALUES (
+INSERT INTO usuarios (nombre, email, password, rol, telefono)
+VALUES 
+(
     'Admin',
     'admin@reparaya.com',
     '$2y$10$wH6z6vJz3b1VvZrXrYlE2uC7xX5s9j3y6YpZ1cQzQ5n1Xz8YwZ9mK',
-    'admin'),
-    (
-    'root',
+    'admin',
+    '600000001'
+),
+(
+    'Root',
     'root@uoc.edu',
     '$2y$10$OY9/ySm63NNvDl93KcRVlOkFxa1a.9q93beevM7NRfq6MsTq9jEEW',
-    'admin'
+    'admin',
+    '600000002'
+),
+(
+    'Cliente Test',
+    'cliente@uoc.com',
+    '$2y$10$OY9/ySm63NNvDl93KcRVlOkFxa1a.9q93beevM7NRfq6MsTq9jEEW',
+    'particular',
+    '600000003'
+),
+(
+    'Tecnico Test',
+    'tecnico@uoc.com',
+    '$2y$10$OY9/ySm63NNvDl93KcRVlOkFxa1a.9q93beevM7NRfq6MsTq9jEEW',
+    'tecnico',
+    '600000004'
 );
 
 INSERT INTO especialidades (nombre_especialidad) VALUES
@@ -83,3 +103,14 @@ INSERT INTO estados (nombre_estado) VALUES
 ('Asignada'),
 ('Finalizada'),
 ('Cancelada');
+
+-- =========================
+-- TECNICO (ENLAZADO)
+-- =========================
+INSERT INTO tecnicos (usuario_id, nombre_completo, especialidad_id, disponible)
+VALUES (
+    (SELECT id FROM usuarios WHERE email = 'tecnico@test.com'),
+    'Tecnico Test',
+    1,
+    TRUE
+);

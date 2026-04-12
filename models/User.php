@@ -41,7 +41,7 @@ class User extends Model
         ]);
     }
 
-    // 🔥 MÉTODO CLAVE PARA LA RÚBRICA
+    // Perfil
     public function updateProfile(int $id, array $data): bool
     {
         $fields = [];
@@ -89,5 +89,11 @@ class User extends Model
         $sql = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE id = :id";
 
         return $this->execute($sql, $params);
+    }
+
+        public function getClientes(): array
+    {
+        $sql = "SELECT id, nombre, email FROM {$this->table} WHERE rol = 'particular'";
+        return $this->fetchAll($sql);
     }
 }

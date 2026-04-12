@@ -8,6 +8,15 @@
         </div>
     <?php else: ?>
 
+        <!-- SELECTOR VISTA -->
+        <div class="mb-3">
+            <select id="selectorVista" class="form-control">
+                <option value="mes">Mes</option>
+                <option value="semana">Semana</option>
+                <option value="dia">Día</option>
+            </select>
+        </div>
+
         <!-- SELECTOR DE MES -->
         <div class="mb-3">
             <input type="month" id="selectorMes" class="form-control">
@@ -16,7 +25,7 @@
         <!-- CALENDARIO -->
         <div id="calendario" class="row g-2 mb-5"></div>
 
-        <!-- TABLA (fallback + extra info) -->
+        <!-- TABLA -->
         <h4 class="mb-3">Listado de incidencias</h4>
 
         <table class="table table-bordered">
@@ -52,6 +61,7 @@
             </tbody>
         </table>
 
+        <!-- LEYENDA -->
         <div class="mt-3">
             <span class="badge bg-danger">Urgente</span>
             <span class="badge bg-success">Estándar</span>
@@ -59,6 +69,30 @@
 
     <?php endif; ?>
 
+</div>
+
+<!-- MODAL DETALLE INCIDENCIA -->
+<div class="modal fade" id="modalIncidencia" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle de incidencia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" id="modalContenido">
+                <!-- contenido dinámico -->
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <!-- PASAR DATOS A JS -->
