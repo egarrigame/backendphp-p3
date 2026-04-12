@@ -8,24 +8,7 @@
         </div>
     <?php else: ?>
 
-        <!-- SELECTOR VISTA -->
-        <div class="mb-3">
-            <select id="selectorVista" class="form-control">
-                <option value="mes">Mes</option>
-                <option value="semana">Semana</option>
-                <option value="dia">Día</option>
-            </select>
-        </div>
-
-        <!-- SELECTOR DE MES -->
-        <div class="mb-3">
-            <input type="month" id="selectorMes" class="form-control">
-        </div>
-
-        <!-- CALENDARIO -->
-        <div id="calendario" class="row g-2 mb-5"></div>
-
-        <!-- TABLA -->
+          <!-- TABLA -->
         <h4 class="mb-3">Listado de incidencias</h4>
 
         <table class="table table-bordered">
@@ -48,7 +31,7 @@
                             : 'table-success';
                     ?>
 
-                    <tr class="<?= $color ?>">
+                    <tr class="<?= $i['tipo_urgencia'] === 'Urgente' ? 'fila-urgente' : 'fila-estandar' ?>">
                         <td><?= date('d/m/Y H:i', strtotime($i['fecha_servicio'])) ?></td>
                         <td><?= $i['localizador'] ?></td>
                         <td><?= $i['cliente_nombre'] ?></td>
@@ -66,6 +49,23 @@
             <span class="badge bg-danger">Urgente</span>
             <span class="badge bg-success">Estándar</span>
         </div>
+
+        <!-- SELECTOR VISTA -->
+        <div class="mb-3">
+            <select id="selectorVista" class="form-control">
+                <option value="mes">Mes</option>
+                <option value="semana">Semana</option>
+                <option value="dia">Día</option>
+            </select>
+        </div>
+
+        <!-- SELECTOR DE MES -->
+        <div class="mb-3">
+            <input type="month" id="selectorMes" class="form-control">
+        </div>
+
+        <!-- CALENDARIO -->
+        <div id="calendario" class="row g-2 mb-5"></div>
 
     <?php endif; ?>
 

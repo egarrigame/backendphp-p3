@@ -35,11 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
         evento.style.fontSize = "12px";
         evento.style.cursor = "pointer";
 
-        if (i.tipo_urgencia === "Urgente") {
-            evento.style.backgroundColor = "#dc3545";
-        } else {
-            evento.style.backgroundColor = "#198754";
-        }
+        evento.classList.add(
+            i.tipo_urgencia === "Urgente"
+                ? "evento-urgente"
+                : "evento-estandar"
+        );
 
         evento.innerText = i.nombre_especialidad;
 

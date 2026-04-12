@@ -178,6 +178,36 @@ body {
     padding-bottom: 60px;
 }
 
+/* ===== COLORES POR TIPO ===== */
+
+.fila-urgente {
+    background-color: #ffe5e5;
+}
+
+.fila-urgente:hover {
+    background-color: #ffd6d6;
+}
+
+.fila-estandar {
+    background-color: #e6f4ea;
+}
+
+.fila-estandar:hover {
+    background-color: #d7f0df;
+}
+
+.evento-urgente {
+    background-color: #dc3545;
+}
+
+.evento-estandar {
+    background-color: #198754;
+}
+
+.navbar {
+    padding: 10px 0;
+}
+
 /* ===== ANIMACIÓN ===== */
 @keyframes scaleIn {
     from {

@@ -4,21 +4,21 @@ COLLATE utf8mb4_unicode_ci;
 
 USE reparaya;
 
--- USUARIOS
+-- 1. TABLA DE USUARIOS (Para el Alumno de Gestión de Usuarios)
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL, -- Se usará password_hash() de PHP
     rol ENUM('admin', 'tecnico', 'particular') NOT NULL DEFAULT 'particular',
-    telefono VARCHAR(20) NOT NULL,
+    telefono VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ESPECIALIDADES
+-- 2. TABLA DE CATEGORÍAS/ESPECIALIDADES (Para el Alumno de Maestros)
 CREATE TABLE especialidades (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_especialidad VARCHAR(50) NOT NULL
+    nombre_especialidad VARCHAR(50) NOT NULL -- Fontanería, Electricidad, etc.
 );
 
 -- ESTADOS
@@ -27,7 +27,7 @@ CREATE TABLE estados (
     nombre_estado VARCHAR(50) NOT NULL
 );
 
--- TECNICOS
+-- 3. TABLA DE TÉCNICOS (Para el Alumno de Gestión de Técnicos)
 CREATE TABLE tecnicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT UNIQUE,
@@ -38,9 +38,11 @@ CREATE TABLE tecnicos (
     FOREIGN KEY (especialidad_id) REFERENCES especialidades(id)
 );
 
+-- Modificamos estandar y urgente en "tipo_urgencia ENUM" debido a errores asociados al utf8, la tilde en la variable estándar rompía el código
+-- 4. TABLA DE INCIDENCIAS/RESERVAS (Para el Alumno de Gestión de Incidencias)
 CREATE TABLE incidencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    localizador VARCHAR(12) NOT NULL UNIQUE,
+    localizador VARCHAR(12) NOT NULL UNIQUE, -- Código tipo R93979A
     cliente_id INT NOT NULL,
     tecnico_id INT DEFAULT NULL,
     especialidad_id INT NOT NULL,
