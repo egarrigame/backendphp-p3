@@ -1,7 +1,11 @@
 <div class="container mt-4">
 
-    <h2 class="mb-4">Editar incidencia</h2>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">✏️ Editar incidencia</h2>
+    </div>
 
+    <!-- ALERTAS -->
     <?php if (!empty($_SESSION['error'])): ?>
         <div class="alert alert-danger">
             <?= $_SESSION['error']; unset($_SESSION['error']); ?>
@@ -14,84 +18,96 @@
         </div>
     <?php endif; ?>
 
-    <form method="POST" action="/admin/actualizar-incidencia">
+    <!-- FORM -->
+    <div class="card p-4">
+        <form method="POST" action="/admin/actualizar-incidencia">
 
-        <input type="hidden" name="id" value="<?= $incidencia['id'] ?>">
+            <input type="hidden" name="id" value="<?= $incidencia['id'] ?>">
 
-        <!-- Cliente (solo lectura) -->
-        <div class="mb-3">
-            <label class="form-label">Cliente</label>
-            <input type="text" class="form-control" 
-                   value="<?= $incidencia['cliente_nombre'] ?>" disabled>
-        </div>
+            <div class="row">
 
-        <!-- Especialidad -->
-        <div class="mb-3">
-            <label class="form-label">Especialidad</label>
-            <select name="especialidad_id" class="form-select">
-                <?php foreach ($especialidades as $e): ?>
-                    <option value="<?= $e['id'] ?>"
-                        <?= $e['id'] == $incidencia['especialidad_id'] ? 'selected' : '' ?>>
-                        <?= $e['nombre_especialidad'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+                <!-- CLIENTE -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Cliente</label>
+                    <input type="text" class="form-control"
+                           value="<?= $incidencia['cliente_nombre'] ?>" disabled>
+                </div>
 
-        <!-- Estado -->
-        <div class="mb-3">
-            <label class="form-label">Estado</label>
-            <select name="estado_id" class="form-select">
-                <?php foreach ($estados as $estado): ?>
-                    <option value="<?= $estado['id'] ?>"
-                        <?= $estado['id'] == $incidencia['estado_id'] ? 'selected' : '' ?>>
-                        <?= $estado['nombre_estado'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+                <!-- ESTADO -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Estado</label>
+                    <select name="estado_id" class="form-select">
+                        <?php foreach ($estados as $estado): ?>
+                            <option value="<?= $estado['id'] ?>"
+                                <?= $estado['id'] == $incidencia['estado_id'] ? 'selected' : '' ?>>
+                                <?= $estado['nombre_estado'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-        <!-- Descripción -->
-        <div class="mb-3">
-            <label class="form-label">Descripción</label>
-            <textarea name="descripcion" class="form-control" required>
-<?= $incidencia['descripcion'] ?>
-            </textarea>
-        </div>
+                <!-- ESPECIALIDAD -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Especialidad</label>
+                    <select name="especialidad_id" class="form-select">
+                        <?php foreach ($especialidades as $e): ?>
+                            <option value="<?= $e['id'] ?>"
+                                <?= $e['id'] == $incidencia['especialidad_id'] ? 'selected' : '' ?>>
+                                <?= $e['nombre_especialidad'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-        <!-- Dirección -->
-        <div class="mb-3">
-            <label class="form-label">Dirección</label>
-            <input type="text" name="direccion" class="form-control"
-                   value="<?= $incidencia['direccion'] ?>" required>
-        </div>
+                <!-- URGENCIA -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tipo de servicio</label>
+                    <select name="tipo_urgencia" class="form-select">
+                        <option value="estandar"
+                            <?= $incidencia['tipo_urgencia'] === 'estandar' ? 'selected' : '' ?>>
+                            Estándar
+                        </option>
+                        <option value="urgente"
+                            <?= $incidencia['tipo_urgencia'] === 'urgente' ? 'selected' : '' ?>>
+                            Urgente
+                        </option>
+                    </select>
+                </div>
 
-        <!-- Fecha -->
-        <div class="mb-3">
-            <label class="form-label">Fecha del servicio</label>
-            <input type="datetime-local" name="fecha_servicio"
-                   class="form-control"
-                   value="<?= date('Y-m-d\TH:i', strtotime($incidencia['fecha_servicio'])) ?>">
-        </div>
+                <!-- FECHA -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Fecha del servicio</label>
+                    <input type="datetime-local" name="fecha_servicio"
+                           class="form-control"
+                           value="<?= date('Y-m-d\TH:i', strtotime($incidencia['fecha_servicio'])) ?>">
+                </div>
 
-        <!-- Urgencia -->
-        <div class="mb-3">
-            <label class="form-label">Tipo de servicio</label>
-            <select name="tipo_urgencia" class="form-select">
-                <option value="Estándar"
-                    <?= $incidencia['tipo_urgencia'] === 'Estándar' ? 'selected' : '' ?>>
-                    Estándar
-                </option>
-                <option value="Urgente"
-                    <?= $incidencia['tipo_urgencia'] === 'Urgente' ? 'selected' : '' ?>>
-                    Urgente
-                </option>
-            </select>
-        </div>
+                <!-- DIRECCIÓN -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" name="direccion" class="form-control"
+                           value="<?= $incidencia['direccion'] ?>" required>
+                </div>
 
-        <button class="btn btn-primary">Guardar cambios</button>
-        <a href="/admin/incidencia-detalle" class="btn btn-secondary">Volver</a>
+                <!-- DESCRIPCIÓN -->
+                <div class="col-12 mb-3">
+                    <label class="form-label">Descripción</label>
+                    <textarea name="descripcion" class="form-control" rows="4" required><?= trim($incidencia['descripcion']) ?></textarea>
+                </div>
 
-    </form>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a href="/admin/incidencias" class="btn btn-secondary">
+                    ← Volver
+                </a>
+                <button class="btn btn-primary">
+                    💾 Guardar cambios
+                </button>
+            </div>
+
+        </form>
+    </div>
 
 </div>

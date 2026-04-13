@@ -1,7 +1,11 @@
 <div class="container mt-4">
 
-    <h2 class="mb-4">Gestión de especialidades</h2>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">🧩 Gestión de especialidades</h2>
+    </div>
 
+    <!-- ALERTAS -->
     <?php if (!empty($_SESSION['success'])): ?>
         <div class="alert alert-success">
             <?= $_SESSION['success']; unset($_SESSION['success']); ?>
@@ -14,56 +18,103 @@
         </div>
     <?php endif; ?>
 
-    <!-- Crear nueva -->
-    <div class="mb-4">
+    <!-- CREAR -->
+    <div class="card p-3 mb-4">
+        <h5 class="mb-3">➕ Nueva especialidad</h5>
+
         <form method="POST" action="/especialidades/guardar" class="d-flex gap-2">
-            <input type="text" name="nombre_especialidad" class="form-control" placeholder="Nueva especialidad" required>
-            <button class="btn btn-primary">Añadir</button>
+
+            <input type="text"
+                   name="nombre_especialidad"
+                   class="form-control"
+                   placeholder="Ej: Fontanería"
+                   required>
+
+            <button class="btn btn-primary">
+                Añadir
+            </button>
+
         </form>
     </div>
 
-    <!-- Tabla -->
+    <!-- LISTADO -->
     <?php if (empty($especialidades)): ?>
-        <p>No hay especialidades registradas.</p>
+
+        <div class="alert alert-info">
+            No hay especialidades registradas.
+        </div>
+
     <?php else: ?>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th style="width: 250px;">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th style="min-width: 220px;">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
 
                 <?php foreach ($especialidades as $e): ?>
+
                     <tr>
 
-                        <td><?= $e['id'] ?></td>
-
+                        <!-- ID -->
                         <td>
-                            <form method="POST" action="/especialidades/actualizar" class="d-flex gap-2">
+                            <span class="badge bg-secondary">
+                                #<?= $e['id'] ?>
+                            </span>
+                        </td>
+
+                        <!-- NOMBRE EDITABLE -->
+                        <td>
+                            <form method="POST"
+                                  action="/especialidades/actualizar"
+                                  class="d-flex gap-2">
+
                                 <input type="hidden" name="id" value="<?= $e['id'] ?>">
-                                <input type="text" name="nombre_especialidad" class="form-control"
-                                       value="<?= $e['nombre_especialidad'] ?>" required>
-                                <button class="btn btn-warning btn-sm">Guardar</button>
+
+                                <input type="text"
+                                       name="nombre_especialidad"
+                                       class="form-control form-control-sm"
+                                       value="<?= $e['nombre_especialidad'] ?>"
+                                       required>
+
+                                <button class="btn btn-warning btn-sm">
+                                    ✔
+                                </button>
+
                             </form>
                         </td>
 
+                        <!-- ACCIONES -->
                         <td>
-                            <form method="POST" action="/especialidades/eliminar" 
+
+                            <form method="POST"
+                                  action="/especialidades/eliminar"
                                   onsubmit="return confirm('¿Eliminar esta especialidad?');">
+
                                 <input type="hidden" name="id" value="<?= $e['id'] ?>">
-                                <button class="btn btn-danger btn-sm">Eliminar</button>
+
+                                <button class="btn btn-outline-danger btn-sm">
+                                    ✖ Eliminar
+                                </button>
+
                             </form>
+
                         </td>
 
                     </tr>
+
                 <?php endforeach; ?>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
 
     <?php endif; ?>
 

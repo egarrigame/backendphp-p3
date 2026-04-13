@@ -1,49 +1,86 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const contenedor = document.getElementById("calendario");
-    const selectorMes = document.getElementById("selectorMes");
+    const selectorFecha = document.getElementById("selectorMes");
     const selectorVista = document.getElementById("selectorVista");
 
-    if (!contenedor || !selectorMes || !selectorVista) return;
+    if (!contenedor || !selectorFecha || !selectorVista) return;
 
     const hoy = new Date();
-    selectorMes.value = hoy.toISOString().slice(0, 7);
 
+    // ====================
+    // CONFIG INPUT
+    // ====================
+    function setModoMes() {
+        selectorFecha.type = "month";
+        selectorFecha.value = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, "0")}`;
+    }
+
+    function setModoDia() {
+        selectorFecha.type = "date";
+        selectorFecha.value = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, "0")}-${String(hoy.getDate()).padStart(2, "0")}`;
+    }
+
+    setModoMes();
+
+    selectorVista.addEventListener("change", () => {
+        if (selectorVista.value === "mes") {
+            setModoMes();
+        } else {
+            setModoDia();
+        }
+        render();
+    });
+
+    // ====================
+    // UTILIDADES
+    // ====================
     function limpiar() {
         contenedor.innerHTML = "";
     }
 
-    function abrirModal(i) {
-        const contenido = `
-            <p><strong>Localizador:</strong> ${i.localizador}</p>
-            <p><strong>Cliente:</strong> ${i.cliente_nombre}</p>
-            <p><strong>Servicio:</strong> ${i.nombre_especialidad}</p>
-            <p><strong>Fecha:</strong> ${i.fecha_servicio}</p>
-            <p><strong>Urgencia:</strong> ${i.tipo_urgencia}</p>
-        `;
+    function esUrgente(tipo) {
+        return (tipo || "").toLowerCase() === "urgente";
+    }
 
-        document.getElementById("modalContenido").innerHTML = contenido;
+    function getFechaStr(date) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
 
-        const modal = new bootstrap.Modal(document.getElementById('modalIncidencia'));
-        modal.show();
+    function parseFecha(fechaStr) {
+        return new Date(fechaStr.replace(" ", "T"));
     }
 
     function crearEvento(i) {
         const evento = document.createElement("div");
 
         evento.className = "mt-1 p-1 text-white rounded evento-calendario";
-        evento.style.fontSize = "12px";
-        evento.style.cursor = "pointer";
 
         evento.classList.add(
-            i.tipo_urgencia === "Urgente"
+            esUrgente(i.tipo_urgencia)
                 ? "evento-urgente"
                 : "evento-estandar"
         );
 
         evento.innerText = i.nombre_especialidad;
 
-        evento.onclick = () => abrirModal(i);
+        evento.onclick = () => {
+            const fecha = parseFecha(i.fecha_servicio);
+
+            const contenido = `
+                <p><strong>Localizador:</strong> ${i.localizador}</p>
+                <p><strong>Cliente:</strong> ${i.cliente_nombre}</p>
+                <p><strong>Servicio:</strong> ${i.nombre_especialidad}</p>
+                <p><strong>Fecha:</strong> ${fecha.toLocaleString('es-ES')}</p>
+                <p><strong>Urgencia:</strong> ${esUrgente(i.tipo_urgencia) ? "Urgente" : "Estándar"}</p>
+            `;
+
+            document.getElementById("modalContenido").innerHTML = contenido;
+            new bootstrap.Modal(document.getElementById('modalIncidencia')).show();
+        };
 
         return evento;
     }
@@ -54,11 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderMes() {
         limpiar();
 
-        const [year, month] = selectorMes.value.split("-").map(Number);
+        const [year, month] = selectorFecha.value.split("-").map(Number);
 
         const primerDia = new Date(year, month - 1, 1);
         const ultimoDia = new Date(year, month, 0).getDate();
-        const offset = primerDia.getDay();
+
+        let offset = primerDia.getDay();
+        offset = offset === 0 ? 6 : offset - 1;
 
         for (let i = 0; i < offset; i++) {
             const empty = document.createElement("div");
@@ -68,7 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         for (let dia = 1; dia <= ultimoDia; dia++) {
 
-            const fechaStr = `${year}-${String(month).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+            const fecha = new Date(year, month - 1, dia);
+            const fechaStr = getFechaStr(fecha);
 
             const div = document.createElement("div");
             div.className = "col-md-2 border p-2 bg-white";
@@ -92,24 +132,32 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderSemana() {
         limpiar();
 
-        const fecha = new Date();
-        const diaSemana = fecha.getDay();
+        const fechaBase = new Date(selectorFecha.value);
 
-        const inicio = new Date(fecha);
-        inicio.setDate(fecha.getDate() - diaSemana);
+        let diaSemana = fechaBase.getDay();
+        diaSemana = diaSemana === 0 ? 7 : diaSemana;
+
+        const lunes = new Date(fechaBase);
+        lunes.setDate(fechaBase.getDate() - (diaSemana - 1));
+
+        const dias = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
         for (let i = 0; i < 7; i++) {
 
-            const dia = new Date(inicio);
-            dia.setDate(inicio.getDate() + i);
+            const dia = new Date(lunes);
+            dia.setDate(lunes.getDate() + i);
 
-            const fechaStr = dia.toISOString().slice(0, 10);
+            const fechaStr = getFechaStr(dia);
+            const nombreDia = dias[(dia.getDay() + 6) % 7];
 
             const div = document.createElement("div");
-            div.className = "col-md-2 border p-2 bg-white";
+            div.className = "col-md border p-2 bg-white";
             div.style.minHeight = "120px";
 
-            div.innerHTML = `<strong>${dia.getDate()}</strong>`;
+            div.innerHTML = `
+                <strong>${nombreDia}</strong><br>
+                ${dia.getDate()}
+            `;
 
             incidencias.forEach(i => {
                 if (i.fecha_servicio.slice(0, 10) === fechaStr) {
@@ -127,15 +175,22 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderDia() {
         limpiar();
 
-        const fecha = new Date().toISOString().slice(0, 10);
+        const fecha = new Date(selectorFecha.value);
+        const fechaStr = getFechaStr(fecha);
 
         const div = document.createElement("div");
         div.className = "col-12 border p-3 bg-white";
 
-        div.innerHTML = `<h5>${fecha}</h5>`;
+        div.innerHTML = `
+            <h5>${fecha.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long'
+            })}</h5>
+        `;
 
         incidencias.forEach(i => {
-            if (i.fecha_servicio.slice(0, 10) === fecha) {
+            if (i.fecha_servicio.slice(0, 10) === fechaStr) {
                 div.appendChild(crearEvento(i));
             }
         });
@@ -154,8 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else renderDia();
     }
 
-    selectorMes.addEventListener("change", render);
-    selectorVista.addEventListener("change", render);
+    selectorFecha.addEventListener("change", render);
 
     render();
 });

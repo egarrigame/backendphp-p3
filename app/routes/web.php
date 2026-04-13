@@ -29,7 +29,8 @@ $router->post('/perfil', [UserController::class, 'updatePerfil']);
 | Cliente
 |--------------------------------------------------------------------------
 */
-$router->get('/cliente/dashboard', [IncidenciaController::class, 'misAvisos']);
+$router->get('/cliente/dashboard', [UserController::class, 'dashboardCliente']);
+$router->get('/cliente/mis-avisos', [IncidenciaController::class, 'misAvisos']);
 $router->get('/cliente/nueva-incidencia', [IncidenciaController::class, 'create']);
 $router->post('/cliente/nueva-incidencia', [IncidenciaController::class, 'store']);
 $router->post('/cliente/cancelar-incidencia', [IncidenciaController::class, 'cancel']);
@@ -46,7 +47,8 @@ $router->post('/admin/asignar-tecnico', [AdminController::class, 'asignarTecnico
 $router->post('/admin/cancelar-incidencia', [AdminController::class, 'cancelarIncidencia']);
 $router->get('/admin/crear-incidencia', [AdminController::class, 'crearIncidencia']);
 $router->post('/admin/crear-incidencia', [AdminController::class, 'storeIncidencia']);
-
+$router->get('/admin/editar-incidencia', [AdminController::class, 'editIncidencia']);
+$router->post('/admin/actualizar-incidencia', [AdminController::class, 'updateIncidencia']);
 /*
 |--------------------------------------------------------------------------
 | Técnicos

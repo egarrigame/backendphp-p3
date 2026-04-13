@@ -106,51 +106,53 @@ class AdminController extends Controller
         ]);
     }
 
-public function storeIncidencia(): void
-{
-    $this->requireAuth();
+    public function storeIncidencia(): void
+    {
+        $this->requireAuth();
 
-    if (!$this->isPost()) {
-        $this->redirect('/admin/crear-incidencia');
-    }
-
-    // NORMALIZAR tipo_urgencia
-    $tipoRaw = $_POST['tipo_urgencia'] ?? '';
-
-    switch (strtolower(trim($tipoRaw))) {
-        case 'urgente':
-            $tipo = 'Urgente';
-            break;
-
-        case 'estandar':
-        case 'estándar':
-            $tipo = 'Estándar';
-            break;
-
-        default:
-            $_SESSION['error'] = 'Tipo de urgencia inválido';
+        if (!$this->isPost()) {
             $this->redirect('/admin/crear-incidencia');
+        }
+
+        // NORMALIZACIÓN CORRECTA (BBDD)
+        $tipoRaw = $_POST['tipo_urgencia'] ?? '';
+
+        switch (strtolower(trim($tipoRaw))) {
+            case 'urgente':
+                $tipo = 'urgente';
+                break;
+
+            case 'estandar':
+            case 'estándar':
+                $tipo = 'estandar';
+                break;
+
+            default:
+                $_SESSION['error'] = 'Tipo de urgencia inválido';
+                $this->redirect('/admin/crear-incidencia');
+        }
+
+        $incidenciaModel = new Incidencia();
+
+        // ADMIN = TRUE (SIN RESTRICCIÓN 48H)
+        $created = $incidenciaModel->create([
+            'cliente_id' => $_POST['cliente_id'],
+            'especialidad_id' => $_POST['especialidad_id'],
+            'descripcion' => $_POST['descripcion'],
+            'direccion' => $_POST['direccion'],
+            'fecha_servicio' => $_POST['fecha_servicio'],
+            'tipo_urgencia' => $tipo,
+            'is_admin' => true
+        ]);
+
+        if (!$created) {
+            $_SESSION['error'] = 'Error al crear incidencia';
+            $this->redirect('/admin/crear-incidencia');
+        }
+
+        $_SESSION['success'] = 'Incidencia creada correctamente';
+        $this->redirect('/admin/dashboard');
     }
-
-    $incidenciaModel = new Incidencia();
-
-    $created = $incidenciaModel->create([
-        'cliente_id' => $_POST['cliente_id'],
-        'especialidad_id' => $_POST['especialidad_id'],
-        'descripcion' => $_POST['descripcion'],
-        'direccion' => $_POST['direccion'],
-        'fecha_servicio' => $_POST['fecha_servicio'],
-        'tipo_urgencia' => $tipo
-    ]);
-
-    if (!$created) {
-        $_SESSION['error'] = 'Error al crear incidencia';
-        $this->redirect('/admin/crear-incidencia');
-    }
-
-    $_SESSION['success'] = 'Incidencia creada correctamente';
-    $this->redirect('/admin/dashboard');
-}
 
     public function editIncidencia(): void
     {

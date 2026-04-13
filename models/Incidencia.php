@@ -21,6 +21,7 @@ class Incidencia extends Model
         return $result ? (int)$result['id'] : 0;
     }
 
+    // 🔥 FIX: validación real en segundos
     public function validarRegla48h(string $fecha, string $tipo): bool
     {
         if ($tipo !== 'Estándar') {
@@ -30,7 +31,9 @@ class Incidencia extends Model
         $fechaServicio = new DateTime($fecha);
         $ahora = new DateTime();
 
-        return $ahora->diff($fechaServicio)->days >= 2;
+        $diffSegundos = $fechaServicio->getTimestamp() - $ahora->getTimestamp();
+
+        return $diffSegundos >= 172800; // 48h
     }
 
     public function create(array $data): bool
@@ -42,7 +45,7 @@ class Incidencia extends Model
         $estadoId = $this->getEstadoIdByNombre('Pendiente');
 
         if ($estadoId === 0) {
-            return false; // seguridad extra
+            return false;
         }
 
         $sql = "INSERT INTO {$this->table}
@@ -61,6 +64,9 @@ class Incidencia extends Model
         ]);
     }
 
+    // =========================
+    // CLIENTE
+    // =========================
     public function findByCliente(int $clienteId): array
     {
         $sql = "SELECT i.*, 
@@ -77,10 +83,14 @@ class Incidencia extends Model
         ]);
     }
 
+    // =========================
+    // ADMIN
+    // =========================
     public function findAll(): array
     {
         $sql = "SELECT i.*, 
                        u.nombre AS cliente_nombre,
+                       u.telefono AS cliente_telefono,
                        t.nombre_completo AS tecnico_nombre,
                        e.nombre_estado,
                        s.nombre_especialidad
@@ -94,9 +104,33 @@ class Incidencia extends Model
         return $this->fetchAll($sql);
     }
 
+    // =========================
+    // TÉCNICO
+    // =========================
+    public function findByTecnico(int $tecnicoId): array
+    {
+        $sql = "SELECT i.*, 
+                       u.nombre AS cliente_nombre,
+                       u.telefono AS cliente_telefono,
+                       e.nombre_estado,
+                       s.nombre_especialidad
+                FROM incidencias i
+                JOIN usuarios u ON i.cliente_id = u.id
+                JOIN estados e ON i.estado_id = e.id
+                JOIN especialidades s ON i.especialidad_id = s.id
+                WHERE i.tecnico_id = :tecnico_id
+                ORDER BY i.fecha_servicio ASC";
+
+        return $this->fetchAll($sql, [
+            'tecnico_id' => $tecnicoId
+        ]);
+    }
+
     public function findById(int $id): array|false
     {
-        $sql = "SELECT i.*, u.nombre AS cliente_nombre
+        $sql = "SELECT i.*, 
+                       u.nombre AS cliente_nombre,
+                       u.telefono AS cliente_telefono
                 FROM incidencias i
                 JOIN usuarios u ON i.cliente_id = u.id
                 WHERE i.id = :id";
@@ -104,6 +138,7 @@ class Incidencia extends Model
         return $this->fetch($sql, ['id' => $id]);
     }
 
+    // 🔥 FIX: cancelación con segundos (no diff()->days)
     public function cancel(int $id, int $clienteId): bool
     {
         $incidencia = $this->findById($id);
@@ -115,7 +150,9 @@ class Incidencia extends Model
         $fechaServicio = new DateTime($incidencia['fecha_servicio']);
         $ahora = new DateTime();
 
-        if ($ahora->diff($fechaServicio)->days < 2) {
+        $diffSegundos = $fechaServicio->getTimestamp() - $ahora->getTimestamp();
+
+        if ($diffSegundos < 172800) {
             return false;
         }
 
@@ -136,7 +173,9 @@ class Incidencia extends Model
     {
         $estadoCancelado = $this->getEstadoIdByNombre('Cancelada');
 
-        $sql = "UPDATE incidencias SET estado_id = :estado_id WHERE id = :id";
+        $sql = "UPDATE incidencias 
+                SET estado_id = :estado_id 
+                WHERE id = :id";
 
         return $this->execute($sql, [
             'estado_id' => $estadoCancelado,

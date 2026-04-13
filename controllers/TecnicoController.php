@@ -5,16 +5,19 @@ declare(strict_types=1);
 require_once __DIR__ . '/../core/Controller.php';
 require_once __DIR__ . '/../models/Tecnico.php';
 require_once __DIR__ . '/../models/Especialidad.php';
+require_once __DIR__ . '/../models/Incidencia.php';
 
 class TecnicoController extends Controller
 {
     private Tecnico $tecnicoModel;
     private Especialidad $especialidadModel;
+    private Incidencia $incidenciaModel;
 
     public function __construct()
     {
         $this->tecnicoModel = new Tecnico();
         $this->especialidadModel = new Especialidad();
+        $this->incidenciaModel = new Incidencia();
     }
 
     public function index(): void
@@ -141,13 +144,14 @@ class TecnicoController extends Controller
             die('Acceso no autorizado');
         }
 
+        // Obtener técnico asociado al usuario logueado
         $tecnico = $this->tecnicoModel->findByUsuarioId($_SESSION['user']['id']);
 
         if (!$tecnico) {
             die('No se encontró técnico asociado');
         }
 
-        $incidencias = $this->tecnicoModel->getAgenda($tecnico['id']);
+        $incidencias = $this->incidenciaModel->findByTecnico($tecnico['id']);
 
         $this->render('tecnico/agenda', [
             'incidencias' => $incidencias

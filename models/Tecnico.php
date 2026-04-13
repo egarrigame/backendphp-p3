@@ -60,6 +60,17 @@ class Tecnico extends Model
 
     public function update(int $id, array $data): bool
     {
+        // Si no viene nombre_completo, lo recuperamos de BD
+        if (!isset($data['nombre_completo']) || empty($data['nombre_completo'])) {
+            $tecnico = $this->findById($id);
+
+            if (!$tecnico) {
+                return false;
+            }
+
+            $data['nombre_completo'] = $tecnico['nombre_completo'];
+        }
+
         $sql = "UPDATE tecnicos 
                 SET nombre_completo = :nombre_completo,
                     especialidad_id = :especialidad_id,

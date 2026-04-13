@@ -32,8 +32,8 @@ class AuthController extends Controller
         $email = trim($_POST['email'] ?? '');
         $password = trim($_POST['password'] ?? '');
 
-        // Validación
-        if (empty($email) || empty($password)) {
+        // VALIDACIÓN
+        if ($email === '' || $password === '') {
             $_SESSION['error'] = 'Todos los campos son obligatorios';
             $this->redirect('/login');
         }
@@ -50,7 +50,7 @@ class AuthController extends Controller
             $this->redirect('/login');
         }
 
-        // Sesión
+        // SESIÓN
         $_SESSION['user'] = [
             'id' => $user['id'],
             'nombre' => $user['nombre'],
@@ -58,7 +58,7 @@ class AuthController extends Controller
             'rol' => $user['rol']
         ];
 
-        // Redirección por rol
+        // REDIRECCIÓN POR ROL
         if ($user['rol'] === 'admin') {
             $this->redirect('/admin/dashboard');
         }
@@ -86,16 +86,31 @@ class AuthController extends Controller
         $telefono = trim($_POST['telefono'] ?? '');
         $password = trim($_POST['password'] ?? '');
 
-        if (empty($nombre) || empty($email) || empty($telefono) || empty($password)) {
+        // VALIDACIÓN BÁSICA
+        if ($nombre === '' || $email === '' || $telefono === '' || $password === '') {
             $_SESSION['error'] = 'Todos los campos son obligatorios';
             $this->redirect('/register');
         }
 
+        // EMAIL
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = 'Email no válido';
             $this->redirect('/register');
         }
 
+        // PASSWORD
+        if (strlen($password) < 6) {
+            $_SESSION['error'] = 'La contraseña debe tener al menos 4 caracteres';
+            $this->redirect('/register');
+        }
+
+        // TELÉFONO
+        if (!preg_match('/^[0-9]{9,15}$/', $telefono)) {
+            $_SESSION['error'] = 'Teléfono no válido';
+            $this->redirect('/register');
+        }
+
+        // EMAIL DUPLICADO
         if ($this->userModel->findByEmail($email)) {
             $_SESSION['error'] = 'El email ya está registrado';
             $this->redirect('/register');
@@ -116,7 +131,7 @@ class AuthController extends Controller
             $this->redirect('/register');
         }
 
-        $_SESSION['success'] = 'Registro completado';
+        $_SESSION['success'] = 'Registro completado correctamente';
         $this->redirect('/login');
     }
 

@@ -84,4 +84,11 @@ class UserController extends Controller
 
         $this->redirect('/perfil');
     }
+
+    public function dashboardCliente(): void
+{
+    $this->requireAuth();
+
+    $this->render('cliente/dashboard');
+}
 }

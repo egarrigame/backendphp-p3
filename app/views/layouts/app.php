@@ -22,93 +22,76 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg">
     <div class="container">
 
+        <!-- BRAND -->
         <?php if (isset($_SESSION['user'])): ?>
             <?php if ($_SESSION['user']['rol'] === 'admin'): ?>
                 <a class="navbar-brand" href="/admin/dashboard">ReparaYa - Admin</a>
             <?php elseif ($_SESSION['user']['rol'] === 'tecnico'): ?>
                 <a class="navbar-brand" href="/tecnico/agenda">ReparaYa - Técnico</a>
             <?php else: ?>
-                <a class="navbar-brand" href="/cliente/dashboard">ReparaYa - Cliente</a>
+                <a class="navbar-brand" href="/cliente/dashboard">ReparaYa</a>
             <?php endif; ?>
         <?php else: ?>
             <a class="navbar-brand" href="/">ReparaYa</a>
         <?php endif; ?>
 
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto">
+        <!-- TOGGLER -->
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+            ☰
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav">
+
+            <!-- LINKS -->
+            <div class="navbar-nav">
 
                 <?php if (isset($_SESSION['user'])): ?>
 
                     <?php if ($_SESSION['user']['rol'] === 'admin'): ?>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/dashboard">Dashboard</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/incidencias">Incidencias</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/calendario">Calendario</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/tecnicos">Técnicos</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/especialidades">Servicios</a>
-                        </li>
+                        <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                        <a class="nav-link" href="/admin/incidencias">Incidencias</a>
+                        <a class="nav-link" href="/admin/calendario">Calendario</a>
+                        <a class="nav-link" href="/tecnicos">Técnicos</a>
+                        <a class="nav-link" href="/especialidades">Especialidades</a>
 
                     <?php elseif ($_SESSION['user']['rol'] === 'tecnico'): ?>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/tecnico/agenda">Mi agenda</a>
-                        </li>
+                        <a class="nav-link" href="/tecnico/agenda">Mi agenda</a>
 
                     <?php else: ?>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/cliente/dashboard">Mis avisos</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/cliente/nueva-incidencia">Nueva incidencia</a>
-                        </li>
+                        <a class="nav-link" href="/cliente/dashboard">Dashboard</a>
+                        <a class="nav-link" href="/cliente/mis-avisos">Mis avisos</a>
+                        <a class="nav-link" href="/cliente/nueva-incidencia">Nueva incidencia</a>
 
                     <?php endif; ?>
 
                 <?php endif; ?>
 
-            </ul>
+            </div>
 
-            <ul class="navbar-nav">
+            <!-- USER -->
+            <div class="ms-auto">
 
                 <?php if (isset($_SESSION['user'])): ?>
 
-                    <li class="nav-item">
-                        <span class="nav-link">
-                            <?= htmlspecialchars($_SESSION['user']['nombre']) ?>
-                        </span>
-                    </li>
+                    <span class="nav-link">
+                        <?= htmlspecialchars($_SESSION['user']['nombre']) ?>
+                    </span>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/perfil">Perfil</a>
-                    </li>
+                    <a class="nav-link" href="/perfil">Perfil</a>
 
-                    <li class="nav-item">
-                        <a class="nav-link text-danger" href="/logout">Salir</a>
-                    </li>
+                    <a class="btn" href="/logout">Salir</a>
 
                 <?php endif; ?>
 
-            </ul>
-        </div>
+            </div>
 
+        </div>
     </div>
 </nav>
 
