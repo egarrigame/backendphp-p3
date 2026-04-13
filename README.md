@@ -10,67 +10,71 @@ El proyecto permite gestionar usuarios, incidencias y asignación de técnicos d
 El proyecto sigue una estructura organizada basada en MVC:
 
 
+## 📁 Estructura del proyecto
+
+```
 PHP-P2/
+
+app/
+├── config/
+│   └── database.php
 │
-├── app/
-│ ├── config/
-│ │ └── database.php
-│ │
-│ ├── routes/
-│ │ └── web.php
-│ │
-│ ├── controllers/
-│ │ ├── AuthController.php
-│ │ ├── UserController.php
-│ │ ├── IncidenciaController.php
-│ │ ├── AdminController.php
-│ │ ├── TecnicoController.php
-│ │ └── EspecialidadController.php
-│ │
-│ ├── models/
-│ │ ├── User.php
-│ │ ├── Incidencia.php
-│ │ ├── Tecnico.php
-│ │ └── Especialidad.php
-│ │
-│ ├── views/
-│ │ ├── auth/
-│ │ │ ├── login.php
-│ │ │ └── register.php
-│ │ │
-│ │ ├── admin/
-│ │ │ ├── dashboard.php
-│ │ │ ├── incidencias.php
-│ │ │ ├── crear_incidencia.php
-│ │ │ ├── editar_incidencia.php
-│ │ │ ├── tecnicos.php
-│ │ │ ├── especialidades.php
-│ │ │ └── calendario.php
-│ │ │
-│ │ ├── cliente/
-│ │ │ ├── dashboard.php
-│ │ │ ├── mis_avisos.php
-│ │ │ └── nueva_incidencia.php
-│ │ │
-│ │ ├── tecnico/
-│ │ │ └── agenda.php
-│ │ │
-│ │ ├── user/
-│ │ │ └── perfil.php
-│ │ │
-│ │ └── layouts/
-│ │ ├── app.php
-│ │ └── auth.php
-│ │
-│ └── core/
-│ ├── Router.php
-│ ├── Controller.php
-│ └── Model.php
+├── routes/
+│   └── web.php
 │
-├── public/
-│ └── index.php
+├── controllers/
+│   ├── AuthController.php
+│   ├── UserController.php
+│   ├── IncidenciaController.php
+│   ├── AdminController.php
+│   ├── TecnicoController.php
+│   └── EspecialidadController.php
 │
-└── database.sql
+├── models/
+│   ├── User.php
+│   ├── Incidencia.php
+│   ├── Tecnico.php
+│   └── Especialidad.php
+│
+├── views/
+│   ├── auth/
+│   │   ├── login.php
+│   │   └── register.php
+│   │
+│   ├── admin/
+│   │   ├── dashboard.php
+│   │   ├── incidencias.php
+│   │   ├── crear_incidencia.php
+│   │   ├── editar_incidencia.php
+│   │   ├── tecnicos.php
+│   │   ├── especialidades.php
+│   │   └── calendario.php
+│   │
+│   ├── cliente/
+│   │   ├── dashboard.php
+│   │   ├── mis_avisos.php
+│   │   └── nueva_incidencia.php
+│   │
+│   ├── tecnico/
+│   │   └── agenda.php
+│   │
+│   ├── user/
+│   │   └── perfil.php
+│   │
+│   └── layouts/
+│       ├── app.php
+│       └── auth.php
+│
+└── core/
+    ├── Router.php
+    ├── Controller.php
+    └── Model.php
+
+public/
+└── index.php
+
+bbddReparaYa.sql
+```
 
 
 ---
