@@ -2,31 +2,59 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Especificamos el nombre de la tabla en la base de datos
+    protected $table = 'usuarios';
+
+    // Campos que se pueden asignar masivamente
+    protected $fillable = [
+        'nombre',
+        'email',
+        'password',
+        'rol',
+        'telefono',
+    ];
+
+    // Campos ocultos al serializar
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    // Conversión de tipos
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
+    // Desactivamos timestamps porque la tabla no tiene updated_at
+    public $timestamps = false;
+
+    // Relación con incidencias
+    public function incidencias()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Incidencia::class, 'cliente_id');
+    }
+
+    // Métodos para verificar roles
+    public function isAdmin()
+    {
+        return $this->rol === 'admin';
+    }
+
+    public function isTecnico()
+    {
+        return $this->rol === 'tecnico';
+    }
+
+    public function isParticular()
+    {
+        return $this->rol === 'particular';
     }
 }
