@@ -30,6 +30,18 @@
                         {{-- Enlace al CRUD de especialidades --}}
                         <a class="nav-link" href="{{ route('especialidades.index') }}">Especialidades</a>
                     </li>
+                    <li class="nav-item">
+                        {{-- Enlace al CRUD de técnicos --}}
+                        <a class="nav-link" href="{{ route('tecnicos.index') }}">Técnicos</a>
+                    </li>
+                    <li class="nav-item">
+                        {{-- Enlace al CRUD de usuarios --}}
+                        <a class="nav-link" href="{{ route('usuarios.index') }}">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        {{-- Enlace al CRUD de incidencias --}}
+                        <a class="nav-link" href="{{ route('incidencias.index') }}">Incidencias</a>
+                    </li>
                 </ul>
             </div>
         </div>
