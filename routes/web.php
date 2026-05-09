@@ -6,6 +6,7 @@ use App\Http\Controllers\TecnicoController;
 use App\Http\Controllers\UsuarioController;  
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\GestoraController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,13 +24,15 @@ Route::prefix('gestora')->group(function () {
     Route::post('/servicios', [GestoraController::class, 'serviciosStore'])->name('gestora.servicios.store');
     Route::get('/comisiones', [GestoraController::class, 'comisiones'])->name('gestora.comisiones');
 });
-Route::get('/prueba', function () {
-    return view('prueba');
-});
-use App\Http\Controllers\AdminController;
 
 Route::prefix('admin')->group(function () {
     Route::get('/servicios-gestoras', [AdminController::class, 'serviciosGestoras'])->name('admin.servicios.gestoras');
     Route::get('/liquidaciones', [AdminController::class, 'liquidaciones'])->name('admin.liquidaciones');
     Route::get('/detalle-gestora/{id}', [AdminController::class, 'detalleGestora'])->name('admin.detalle.gestora');
+});
+
+// Rutas de API
+Route::get('/api/servicios/zonas', [App\Http\Controllers\Api\ZonaServicioController::class, 'zonas']);
+Route::get('/api/test', function () {
+    return response()->json(['mensaje' => 'API funciona correctamente']);
 });
