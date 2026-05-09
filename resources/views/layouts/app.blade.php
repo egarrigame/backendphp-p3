@@ -13,7 +13,12 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/especialidades') }}">Especialidades</a>
+                        <a class="nav-link" href="{{ url('/especialidades') }}">
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ route('admin.liquidaciones') }}">Liquidaciones</a>
+</li>
+
+Especialidades</a>
                     </li>
                 </ul>
             </div>

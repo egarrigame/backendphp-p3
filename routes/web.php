@@ -26,3 +26,10 @@ Route::prefix('gestora')->group(function () {
 Route::get('/prueba', function () {
     return view('prueba');
 });
+use App\Http\Controllers\AdminController;
+
+Route::prefix('admin')->group(function () {
+    Route::get('/servicios-gestoras', [AdminController::class, 'serviciosGestoras'])->name('admin.servicios.gestoras');
+    Route::get('/liquidaciones', [AdminController::class, 'liquidaciones'])->name('admin.liquidaciones');
+    Route::get('/detalle-gestora/{id}', [AdminController::class, 'detalleGestora'])->name('admin.detalle.gestora');
+});
