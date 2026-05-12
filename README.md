@@ -1,126 +1,271 @@
-# 🛠️ ReparaYa - Backend PHP MVC
+# ReparaYa - Producto 3
 
-Aplicación web desarrollada en PHP siguiendo arquitectura MVC (Modelo - Vista - Controlador).  
-El proyecto permite gestionar usuarios, incidencias y asignación de técnicos dentro de un sistema de mantenimiento.
+Sistema de gestión de incidencias de reparación migrado a **Laravel 10** con módulo B2B para Empresas Gestoras (Administradores de Fincas), cálculo automático de comisiones y API REST.
 
----
+## Descripción
 
-## 📁 Estructura del proyecto
+ReparaYa es una plataforma que conecta clientes con técnicos de reparación. La aplicación permite:
+
+- **Clientes**: Crear y gestionar avisos de reparación
+- **Administradores**: Gestionar incidencias, técnicos, especialidades y empresas gestoras
+- **Técnicos**: Consultar su agenda de servicios asignados
+- **Empresas Gestoras (B2B)**: Crear avisos en nombre de residentes y consultar liquidaciones de comisiones
+- **API REST**: Endpoint público con datos agregados de servicios por zona
+
+## Requisitos del Sistema
+
+| Componente | Versión |
+|---|---|
+| PHP | >= 8.1 (recomendado 8.2) |
+| MySQL | 8.0 |
+| Composer | >= 2.0 |
+| Apache | Con mod_rewrite habilitado |
+
+### Extensiones PHP requeridas
+
+- BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, PDO_MySQL, Tokenizer, XML
+
+## Instalación Local (Desarrollo)
+
+### 1. Clonar el repositorio
+
+```bash
+git clone <url-repositorio> backendphp-p3
+cd backendphp-p3
+```
+
+### 2. Instalar dependencias
+
+```bash
+composer install
+```
+
+### 3. Configurar el entorno
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Editar `.env` con los datos de la base de datos local:
+
+```env
+APP_URL=http://localhost:8000/producto3
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=reparaya
+DB_USERNAME=root
+DB_PASSWORD=1234
+```
+
+### 4. Crear la base de datos y ejecutar migraciones
+
+```bash
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS reparaya CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+php artisan migrate
+php artisan db:seed
+```
+
+### 5. Iniciar el servidor de desarrollo
+
+```bash
+php artisan serve
+```
+
+La aplicación estará disponible en: `http://localhost:8000/producto3/login`
+
+## Despliegue en Producción (Servidor UOC)
+
+### Datos del servidor
+
+| Parámetro | Valor |
+|---|---|
+| Servidor | fp064.techlab.uoc.edu |
+| Puerto SSH/SFTP | 55000 |
+| Usuario | uocx1 |
+| Ruta de despliegue | ~/public_html/producto3/ |
+| Base de datos | reparaya |
+| Usuario BD | wordpress1 |
+| URL aplicación | https://fp064.techlab.uoc.edu/~uocx1/producto3 |
+
+### Pasos de despliegue
+
+#### Paso 1: Preparar archivos localmente
+
+```bash
+# Instalar dependencias de producción
+composer install --no-dev --optimize-autoloader
+```
+
+#### Paso 2: Subir archivos al servidor
+
+Conectar por SFTP al puerto 55000 y subir todo el proyecto a `~/public_html/producto3/`:
+
+```bash
+sftp -P 55000 uocx1@fp064.techlab.uoc.edu
+sftp> put -r . public_html/producto3/
+```
+
+> **Nota:** Si Composer no está disponible en el servidor, ejecutar `composer install --no-dev` localmente y subir la carpeta `vendor/` junto con el resto del proyecto.
+
+#### Paso 3: Configurar el entorno en el servidor
+
+Conectar por SSH:
+
+```bash
+ssh -p 55000 uocx1@fp064.techlab.uoc.edu
+cd ~/public_html/producto3
+```
+
+Crear/editar el archivo `.env` de producción:
+
+```env
+APP_NAME=ReparaYa
+APP_ENV=production
+APP_KEY=
+APP_DEBUG=false
+APP_URL=https://fp064.techlab.uoc.edu/~uocx1/producto3
+
+LOG_CHANNEL=single
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=reparaya
+DB_USERNAME=wordpress1
+DB_PASSWORD=DWD8Ds3l4dvXpjZH
+
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+```
+
+#### Paso 4: Generar clave de aplicación
+
+```bash
+php artisan key:generate
+```
+
+#### Paso 5: Ejecutar migraciones y seeders
+
+```bash
+php artisan migrate --force
+php artisan db:seed --force
+```
+
+#### Paso 6: Optimizar para producción
+
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+#### Paso 7: Configurar permisos
+
+```bash
+chmod -R 775 storage bootstrap/cache
+```
+
+#### Paso 8: Verificar el despliegue
+
+- **Aplicación web:** https://fp064.techlab.uoc.edu/~uocx1/producto3/login
+- **API REST:** https://fp064.techlab.uoc.edu/~uocx1/producto3/api/servicios/zonas
+
+### Solución de problemas en producción
+
+Si hay errores tras el despliegue:
+
+```bash
+# Limpiar cachés
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan cache:clear
+
+# Verificar logs
+tail -f storage/logs/laravel.log
+
+# Regenerar autoload
+composer dump-autoload --optimize
+```
+
+## Credenciales de Prueba
+
+| Rol | Email | Contraseña | Notas |
+|---|---|---|---|
+| Admin | root@uoc.edu | 123456 | Acceso completo |
+| Técnico | tecnico@uoc.com | 123456 | Agenda de servicios |
+| Cliente | cliente@uoc.com | 123456 | Panel de avisos |
+| Gestora 1 | fincas@lopez.com | 123456 | Comisión 10% |
+| Gestora 2 | gestiones@martinez.com | 123456 | Comisión 5% |
+
+## Endpoints de la API
+
+### GET /producto3/api/servicios/zonas
+
+Devuelve datos agregados de servicios finalizados por zona geográfica.
+
+**URL completa:** `https://fp064.techlab.uoc.edu/~uocx1/producto3/api/servicios/zonas`
+
+**Respuesta exitosa (200):**
+
+```json
+[
+  {
+    "nombre_zona": "Centro",
+    "total_servicios": 5,
+    "porcentaje": 33.33
+  },
+  {
+    "nombre_zona": "Norte",
+    "total_servicios": 3,
+    "porcentaje": 20.00
+  }
+]
+```
+
+**Campos de respuesta:**
+
+| Campo | Tipo | Descripción |
+|---|---|---|
+| nombre_zona | string | Nombre de la zona geográfica |
+| total_servicios | integer | Número de servicios finalizados en la zona |
+| porcentaje | decimal | Porcentaje respecto al total global (suma ≈ 100%) |
+
+**Notas:**
+- Solo cuenta incidencias con estado "Finalizada" y zona asignada
+- Zonas sin servicios finalizados no aparecen en la respuesta
+- Si no hay servicios finalizados, devuelve un array vacío `[]`
+- Resultados ordenados alfabéticamente por nombre_zona
+
+## Estructura del Proyecto
 
 ```
-PHP-P2/
-
-app/
-├── config/
-│   └── database.php
-│
+producto3/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/     # Controladores (Auth, Admin, Cliente, Tecnico, Gestora, Api)
+│   │   └── Middleware/      # AuthCheck, RoleMiddleware, GestoraMiddleware
+│   ├── Models/              # Modelos Eloquent
+│   └── Providers/           # RouteServiceProvider (prefijo /producto3)
+├── database/
+│   ├── migrations/          # Migraciones de BD
+│   └── seeders/             # Datos iniciales
+├── resources/views/         # Plantillas Blade
 ├── routes/
-│   └── web.php
-│
-├── controllers/
-│   ├── AuthController.php
-│   ├── UserController.php
-│   ├── IncidenciaController.php
-│   ├── AdminController.php
-│   ├── TecnicoController.php
-│   └── EspecialidadController.php
-│
-├── models/
-│   ├── User.php
-│   ├── Incidencia.php
-│   ├── Tecnico.php
-│   └── Especialidad.php
-│
-├── views/
-│   ├── auth/
-│   │   ├── login.php
-│   │   └── register.php
-│   │
-│   ├── admin/
-│   │   ├── dashboard.php
-│   │   ├── incidencias.php
-│   │   ├── crear_incidencia.php
-│   │   ├── editar_incidencia.php
-│   │   ├── tecnicos.php
-│   │   ├── especialidades.php
-│   │   └── calendario.php
-│   │
-│   ├── cliente/
-│   │   ├── dashboard.php
-│   │   ├── mis_avisos.php
-│   │   └── nueva_incidencia.php
-│   │
-│   ├── tecnico/
-│   │   └── agenda.php
-│   │
-│   ├── user/
-│   │   └── perfil.php
-│   │
-│   └── layouts/
-│       ├── app.php
-│       └── auth.php
-│
-└── core/
-    ├── Router.php
-    ├── Controller.php
-    └── Model.php
-
-public/
-└── index.php
-
-bbddReparaYa.sql
+│   ├── web.php              # Rutas web (prefijo /producto3)
+│   └── api.php              # Rutas API (prefijo /producto3/api)
+├── public/                  # Entry point (index.php, assets)
+├── .htaccess                # Rewrite a public/ para servidor UOC
+├── .env.production          # Template de configuración producción
+└── composer.json            # Dependencias PHP
 ```
 
+## Tecnologías
 
----
-
-## 🧠 Arquitectura MVC
-
-- **Modelo (Model)**  
-  Gestiona la base de datos mediante PDO. Contiene la lógica de acceso a datos.
-
-- **Vista (View)**  
-  Archivos PHP que renderizan la interfaz (formularios, tablas, etc).
-
-- **Controlador (Controller)**  
-  Recibe las peticiones, valida datos, ejecuta lógica y conecta Modelo con Vista.
-
-- **Router**  
-  Gestiona las rutas y decide qué controlador ejecutar.
-
-- **Front Controller (`public/index.php`)**  
-  Punto de entrada único de la aplicación.
-
----
-
-## ⚙️ Requisitos
-
-- PHP >= 8.0
-- MySQL / MariaDB
-- Apache o servidor compatible
-
-## 🔐 Seguridad
-- Uso de sentencias preparadas (PDO)
-- Protección contra SQL Injection
-- Contraseñas cifradas con password_hash()
-- Verificación con password_verify()
-- Gestión de sesiones
-
-## 👤 Roles de usuario
-- Admin → gestión completa
-root@uoc.edu / password: 123456
-
-- Técnico → acceso a agenda
-tecnico@uoc.com / password: 123456
-
-- Cliente (particular) → creación y consulta de incidencias
-cliente@uoc.com / password: 123456
-
-## 🚀 Funcionalidades
-- Registro y login de usuarios
-- Gestión de perfiles
-- Creación de incidencias
-- Asignación de técnicos
-- Panel de administración
-- Agenda de técnicos
-- Gestión de especialidades
+- **Backend:** Laravel 10 (PHP 8.2)
+- **Base de datos:** MySQL 8.0
+- **Frontend:** Blade Templates + Bootstrap 5.3 CDN
+- **Tipografía:** Google Fonts (Inter)
+- **Servidor:** Apache con mod_rewrite
