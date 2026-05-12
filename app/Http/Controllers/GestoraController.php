@@ -141,6 +141,12 @@ class GestoraController extends Controller
             ->orderBy('periodo', 'desc')
             ->get();
 
+        // Individual comision records with incidencia details
+        $comisiones = Comision::where('gestora_id', $gestoraId)
+            ->with('incidencia')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         // Total pending (unpaid)
         $totalPendiente = Comision::where('gestora_id', $gestoraId)
             ->where('pagada', false)
@@ -148,6 +154,7 @@ class GestoraController extends Controller
 
         return view('gestora.liquidaciones', [
             'liquidaciones' => $liquidaciones,
+            'comisiones' => $comisiones,
             'totalPendiente' => $totalPendiente,
         ]);
     }

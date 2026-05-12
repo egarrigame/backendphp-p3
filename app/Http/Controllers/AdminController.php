@@ -252,8 +252,8 @@ class AdminController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
-            'cif' => 'required|unique:empresas_gestoras,cif',
-            'email' => 'required|unique:empresas_gestoras,email',
+            'cif' => 'required|regex:/^[A-Z]\d{7}[A-Z0-9]$/|unique:empresas_gestoras,cif',
+            'email' => 'required|email|unique:empresas_gestoras,email',
             'password' => 'required|min:6',
             'porcentaje_comision' => 'required|numeric|between:0,100',
         ]);
@@ -291,8 +291,8 @@ class AdminController extends Controller
 
         $request->validate([
             'nombre' => 'required',
-            'cif' => 'required|unique:empresas_gestoras,cif,' . $id,
-            'email' => 'required|unique:empresas_gestoras,email,' . $id,
+            'cif' => 'required|regex:/^[A-Z]\d{7}[A-Z0-9]$/|unique:empresas_gestoras,cif,' . $id,
+            'email' => 'required|email|unique:empresas_gestoras,email,' . $id,
             'porcentaje_comision' => 'required|numeric|between:0,100',
         ]);
 
@@ -364,5 +364,21 @@ class AdminController extends Controller
         });
 
         return view('admin.liquidacion_mensual', compact('liquidaciones', 'totalGlobal'));
+    }
+
+    /**
+     * Mark all unpaid comisiones for a gestora in a given month as paid.
+     */
+    public function marcarPagada(Request $request, $id)
+    {
+        $gestora = EmpresaGestora::findOrFail($id);
+        $mes = $request->input('mes', now()->startOfMonth()->toDateString());
+
+        Comision::where('gestora_id', $id)
+            ->where('pagada', false)
+            ->where('mes', $mes)
+            ->update(['pagada' => true]);
+
+        return redirect()->back()->with('success', 'Comisiones de ' . $gestora->nombre . ' marcadas como pagadas.');
     }
 }

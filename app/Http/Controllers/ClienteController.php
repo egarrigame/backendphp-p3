@@ -125,10 +125,10 @@ class ClienteController extends Controller
             ->where('cliente_id', session('user.id'))
             ->firstOrFail();
 
-        // Apply 48h rule for estandar urgency
-        if ($incidencia->tipo_urgencia === 'estandar' && (strtotime($incidencia->fecha_servicio) - time()) < 172800) {
+        // Apply 48h rule: cannot cancel if service date is less than 48h away
+        if ((strtotime($incidencia->fecha_servicio) - time()) < 172800) {
             return redirect()->back()
-                ->with('error', 'No se puede cancelar un servicio estándar con menos de 48 horas de antelación.');
+                ->with('error', 'No se puede cancelar una incidencia con menos de 48 horas de antelación.');
         }
 
         // Change estado to Cancelada

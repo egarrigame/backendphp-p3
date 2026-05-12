@@ -10,15 +10,24 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row align-items-center">
+                <div class="col-md-3">
                     <strong>CIF:</strong> {{ $gestora->CIF }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <strong>Porcentaje:</strong> {{ $gestora->porcentaje_comision }}%
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <strong>Total Pendiente:</strong> <span class="text-danger fw-bold">{{ number_format($totalPendiente, 2) }} €</span>
+                </div>
+                <div class="col-md-3 text-end">
+                    @if($totalPendiente > 0)
+                        <form action="{{ url('producto3/admin/gestoras/' . $gestora->id . '/marcar-pagada') }}" method="POST" onsubmit="return confirm('¿Marcar todas las comisiones pendientes de este mes como pagadas?')">
+                            @csrf
+                            <input type="hidden" name="mes" value="{{ now()->startOfMonth()->toDateString() }}">
+                            <button type="submit" class="btn btn-success btn-sm">Marcar como pagada</button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>

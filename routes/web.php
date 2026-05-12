@@ -84,6 +84,7 @@ Route::middleware(['authcheck', 'role:admin'])->prefix('admin')->group(function 
     Route::get('/gestoras/editar/{id}', [AdminController::class, 'editGestora']);
     Route::post('/gestoras/actualizar/{id}', [AdminController::class, 'updateGestora']);
     Route::get('/gestoras/{id}/comisiones', [AdminController::class, 'comisionesGestora']);
+    Route::post('/gestoras/{id}/marcar-pagada', [AdminController::class, 'marcarPagada']);
     Route::get('/liquidacion-mensual', [AdminController::class, 'liquidacionMensual']);
 });
 
