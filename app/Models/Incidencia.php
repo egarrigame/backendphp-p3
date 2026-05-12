@@ -34,7 +34,11 @@ class Incidencia extends Model
 
     public static function generarLocalizador(): string
     {
-        return 'R' . strtoupper(substr(uniqid(), -6));
+        do {
+            $localizador = 'R' . strtoupper(\Illuminate\Support\Str::random(6));
+        } while (self::where('localizador', $localizador)->exists());
+
+        return $localizador;
     }
 
     public function scopeFinalizadas(Builder $query): Builder

@@ -3,76 +3,125 @@
 @section('title', 'Gestión de Especialidades - ReparaYa')
 
 @section('content')
-<div class="row mb-4">
-    <div class="col-12">
-        <h2>Gestión de Especialidades</h2>
-        <p class="text-muted">Administra las especialidades del sistema</p>
-    </div>
-</div>
+<div class="container mt-4">
 
-{{-- Create form --}}
-<div class="card mb-4">
-    <div class="card-header">
-        <h5 class="mb-0">Nueva Especialidad</h5>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">🧩 Gestión de especialidades</h2>
     </div>
-    <div class="card-body">
-        <form method="POST" action="{{ url('/producto3/especialidades/guardar') }}">
+
+    <!-- ALERTAS -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <!-- CREAR -->
+    <div class="card p-3 mb-4">
+        <h5 class="mb-3">➕ Nueva especialidad</h5>
+
+        <form method="POST" action="{{ url('/producto3/especialidades/guardar') }}" class="d-flex gap-2">
             @csrf
-            <div class="row">
-                <div class="col-md-9 mb-3">
-                    <label for="nombre_especialidad" class="form-label">Nombre de la Especialidad</label>
-                    <input type="text" class="form-control" id="nombre_especialidad" name="nombre_especialidad"
-                           value="{{ old('nombre_especialidad') }}" required>
-                </div>
-                <div class="col-md-3 mb-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100">Crear</button>
-                </div>
-            </div>
+
+            <input type="text"
+                   name="nombre_especialidad"
+                   class="form-control"
+                   placeholder="Ej: Fontanería"
+                   value="{{ old('nombre_especialidad') }}"
+                   required>
+
+            <button class="btn btn-primary">
+                Añadir
+            </button>
+
         </form>
     </div>
-</div>
 
-{{-- Especialidades table --}}
-<div class="card">
-    <div class="card-body">
+    <!-- LISTADO -->
+    @if($especialidades->isEmpty())
+
+        <div class="alert alert-info">
+            No hay especialidades registradas.
+        </div>
+
+    @else
+
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-hover align-middle">
+
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Acciones</th>
+                        <th style="min-width: 220px;">Acciones</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    @forelse($especialidades as $especialidad)
-                        <tr>
-                            <td>{{ $especialidad->id }}</td>
-                            <td>
-                                <form method="POST" action="{{ url('/producto3/especialidades/actualizar/' . $especialidad->id) }}"
-                                      class="d-inline-flex align-items-center gap-2">
-                                    @csrf
-                                    <input type="text" class="form-control form-control-sm" name="nombre_especialidad"
-                                           value="{{ $especialidad->nombre_especialidad }}" required>
-                                    <button type="submit" class="btn btn-sm btn-warning">Guardar</button>
-                                </form>
-                            </td>
-                            <td>
-                                <form method="POST" action="{{ url('/producto3/especialidades/eliminar/' . $especialidad->id) }}"
-                                      class="d-inline" onsubmit="return confirm('¿Eliminar esta especialidad?')">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="text-center text-muted">No hay especialidades registradas.</td>
-                        </tr>
-                    @endforelse
+
+                @foreach($especialidades as $especialidad)
+
+                    <tr>
+
+                        <!-- ID -->
+                        <td>
+                            <span class="badge bg-secondary">
+                                #{{ $especialidad->id }}
+                            </span>
+                        </td>
+
+                        <!-- NOMBRE EDITABLE -->
+                        <td>
+                            <form method="POST"
+                                  action="{{ url('/producto3/especialidades/actualizar/' . $especialidad->id) }}"
+                                  class="d-flex gap-2">
+                                @csrf
+
+                                <input type="text"
+                                       name="nombre_especialidad"
+                                       class="form-control form-control-sm"
+                                       value="{{ $especialidad->nombre_especialidad }}"
+                                       required>
+
+                                <button class="btn btn-warning btn-sm">
+                                    ✔
+                                </button>
+
+                            </form>
+                        </td>
+
+                        <!-- ACCIONES -->
+                        <td>
+
+                            <form method="POST"
+                                  action="{{ url('/producto3/especialidades/eliminar/' . $especialidad->id) }}"
+                                  onsubmit="return confirm('¿Eliminar esta especialidad?');">
+                                @csrf
+
+                                <button class="btn btn-outline-danger btn-sm">
+                                    ✖ Eliminar
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                @endforeach
+
                 </tbody>
             </table>
         </div>
-    </div>
+
+    @endif
+
 </div>
 @endsection

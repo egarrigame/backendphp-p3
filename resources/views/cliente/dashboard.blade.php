@@ -3,40 +3,79 @@
 @section('title', 'Dashboard Cliente - ReparaYa')
 
 @section('content')
-<div class="row mb-4">
-    <div class="col-12">
-        <h2>Bienvenido/a, {{ $nombre }}</h2>
-        <p class="text-muted">Panel de cliente - Gestiona tus avisos de reparación</p>
-    </div>
-</div>
+<div class="container mt-4">
 
-<div class="row">
-    <div class="col-md-4 mb-3">
-        <div class="card h-100">
-            <div class="card-body text-center">
-                <h5 class="card-title">Mis Avisos</h5>
-                <p class="card-text">Consulta el estado de tus incidencias</p>
-                <a href="{{ url('/producto3/cliente/mis-avisos') }}" class="btn btn-primary">Ver Avisos</a>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">👤 Panel de cliente</h2>
+    </div>
+
+    <p class="mb-4">
+        Bienvenido, <strong>{{ $nombre }}</strong>
+    </p>
+
+    <!-- ALERTAS -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <div class="row">
+
+        <!-- MIS AVISOS -->
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 p-3">
+                <h5>📋 Mis avisos</h5>
+                <p>Consulta todas tus incidencias pasadas y futuras.</p>
+                <a href="{{ url('/producto3/cliente/mis-avisos') }}" class="btn btn-primary">
+                    Ver avisos
+                </a>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="card h-100">
-            <div class="card-body text-center">
-                <h5 class="card-title">Nueva Incidencia</h5>
-                <p class="card-text">Crea un nuevo aviso de reparación</p>
-                <a href="{{ url('/producto3/cliente/nueva-incidencia') }}" class="btn btn-primary">Crear Incidencia</a>
+
+        <!-- NUEVA INCIDENCIA -->
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 p-3">
+                <h5>➕ Nueva incidencia</h5>
+                <p>Solicita un técnico para una avería.</p>
+                <br>
+                <a href="{{ url('/producto3/cliente/nueva-incidencia') }}" class="btn btn-success">
+                    Crear
+                </a>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="card h-100">
-            <div class="card-body text-center">
-                <h5 class="card-title">Mi Perfil</h5>
-                <p class="card-text">Actualiza tus datos personales</p>
-                <a href="{{ url('/producto3/perfil') }}" class="btn btn-primary">Ver Perfil</a>
+
+        <!-- PERFIL -->
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 p-3">
+                <h5>👤 Perfil</h5>
+                <p>Modifica tus datos personales.</p>
+                <br>
+                <a href="{{ url('/producto3/perfil') }}" class="btn btn-warning">
+                    Editar perfil
+                </a>
             </div>
         </div>
+
+        <!-- LOGOUT -->
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 p-3">
+                <h5>🔒 Sesión</h5>
+                <p>Cerrar sesión del sistema.</p>
+                <a href="{{ url('/producto3/logout') }}" class="btn btn-danger">
+                    Cerrar sesión
+                </a>
+            </div>
+        </div>
+
     </div>
+
 </div>
 @endsection

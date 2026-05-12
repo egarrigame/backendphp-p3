@@ -3,73 +3,157 @@
 @section('title', 'Mis Avisos - ReparaYa')
 
 @section('content')
-<div class="row mb-4">
-    <div class="col-12 d-flex justify-content-between align-items-center">
-        <h2>Mis Avisos</h2>
-        <a href="{{ url('/producto3/cliente/nueva-incidencia') }}" class="btn btn-primary">Nueva Incidencia</a>
-    </div>
-</div>
+<div class="container mt-4">
 
-<div class="row">
-    <div class="col-12">
-        @if($incidencias->isEmpty())
-            <div class="alert alert-info">
-                No tienes incidencias registradas. <a href="{{ url('/producto3/cliente/nueva-incidencia') }}">Crea tu primera incidencia</a>.
-            </div>
-        @else
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Localizador</th>
-                            <th>Especialidad</th>
-                            <th>Fecha Servicio</th>
-                            <th>Estado</th>
-                            <th>Urgencia</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($incidencias as $incidencia)
-                            <tr class="row-{{ $incidencia->tipo_urgencia }}">
-                                <td>{{ $incidencia->localizador }}</td>
-                                <td>{{ $incidencia->especialidad->nombre_especialidad }}</td>
-                                <td>{{ \Carbon\Carbon::parse($incidencia->fecha_servicio)->format('d/m/Y H:i') }}</td>
-                                <td>
-                                    @php
-                                        $estadoNombre = $incidencia->estado->nombre_estado;
-                                        $badgeClass = match($estadoNombre) {
-                                            'Pendiente' => 'badge-pendiente',
-                                            'Asignada' => 'badge-asignada',
-                                            'Finalizada' => 'badge-finalizada',
-                                            'Cancelada' => 'badge-cancelada',
-                                            default => 'bg-secondary',
-                                        };
-                                    @endphp
-                                    <span class="badge {{ $badgeClass }}">{{ $estadoNombre }}</span>
-                                </td>
-                                <td>
-                                    <span class="badge {{ $incidencia->tipo_urgencia === 'urgente' ? 'bg-danger' : 'bg-success' }}">
-                                        {{ ucfirst($incidencia->tipo_urgencia) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    @if($estadoNombre !== 'Cancelada' && $estadoNombre !== 'Finalizada')
-                                        <form action="{{ url('/producto3/cliente/cancelar-incidencia') }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ $incidencia->id }}">
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de cancelar esta incidencia?')">
-                                                Cancelar
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @endif
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">📋 Mis avisos</h2>
+
+        <a href="{{ url('/producto3/cliente/nueva-incidencia') }}" class="btn btn-primary">
+            ➕ Nueva incidencia
+        </a>
     </div>
+
+    <!-- ALERTAS -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if($incidencias->isEmpty())
+        <div class="alert alert-info">
+            No tienes incidencias registradas.
+        </div>
+    @else
+
+        <!-- TABLA PRO -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Localizador</th>
+                        <th>Servicio</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Dirección</th>
+                        <th>Urgencia</th>
+                        <th style="min-width: 140px;">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                @foreach($incidencias as $incidencia)
+
+                    @php
+                        $urgente = strtolower($incidencia->tipo_urgencia) === 'urgente';
+                        $urgenciaTexto = $urgente ? 'Urgente' : 'Estándar';
+
+                        // COLOR FILA
+                        $filaClase = $urgente ? 'fila-urgente' : 'fila-estandar';
+
+                        // REGLA 48H
+                        $fechaServicio = strtotime($incidencia->fecha_servicio);
+                        $ahora = time();
+                        $diffSegundos = $fechaServicio - $ahora;
+
+                        $puedeCancelar = $diffSegundos >= 172800;
+
+                        // COLOR ESTADO
+                        $estadoNombre = $incidencia->estado->nombre_estado;
+                        switch ($estadoNombre) {
+                            case 'Pendiente':
+                                $estadoClase = 'bg-warning text-dark';
+                                break;
+                            case 'Asignada':
+                                $estadoClase = 'bg-primary';
+                                break;
+                            case 'Finalizada':
+                                $estadoClase = 'bg-success';
+                                break;
+                            case 'Cancelada':
+                                $estadoClase = 'bg-danger';
+                                break;
+                            default:
+                                $estadoClase = 'bg-secondary';
+                        }
+                    @endphp
+
+                    <tr class="{{ $filaClase }}">
+
+                        <td><strong>{{ $incidencia->localizador }}</strong></td>
+
+                        <td>{{ $incidencia->especialidad->nombre_especialidad }}</td>
+
+                        <!-- ESTADO -->
+                        <td>
+                            <span class="badge {{ $estadoClase }}">
+                                {{ $estadoNombre }}
+                            </span>
+                        </td>
+
+                        <!-- FECHA -->
+                        <td>
+                            {{ \Carbon\Carbon::parse($incidencia->fecha_servicio)->format('d/m/Y') }}<br>
+                            <small class="text-muted">
+                                {{ \Carbon\Carbon::parse($incidencia->fecha_servicio)->format('H:i') }}
+                            </small>
+                        </td>
+
+                        <td>{{ $incidencia->direccion }}</td>
+
+                        <!-- URGENCIA -->
+                        <td>
+                            <span class="badge {{ $urgente ? 'bg-danger' : 'bg-success' }}">
+                                {{ $urgenciaTexto }}
+                            </span>
+                        </td>
+
+                        <!-- ACCIONES -->
+                        <td>
+
+                            @if($estadoNombre === 'Pendiente' && $puedeCancelar)
+                                <form method="POST" action="{{ url('/producto3/cliente/cancelar-incidencia') }}">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $incidencia->id }}">
+
+                                    <button class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Cancelar incidencia?')">
+                                        ✖ Cancelar
+                                    </button>
+                                </form>
+
+                            @elseif($estadoNombre === 'Pendiente' && !$puedeCancelar)
+                                <span class="text-muted small">
+                                    ⏳ Menos de 48h
+                                </span>
+
+                            @else
+
+                                <span class="text-muted small">No disponible</span>
+
+                            @endif
+
+                        </td>
+
+                    </tr>
+
+                @endforeach
+
+                </tbody>
+
+            </table>
+        </div>
+
+    @endif
+
 </div>
 @endsection

@@ -75,7 +75,7 @@ class TecnicoController extends Controller
 
         if ($tecnico) {
             $incidencias = $tecnico->incidencias()
-                ->with(['estado', 'especialidad'])
+                ->with(['estado', 'especialidad', 'cliente'])
                 ->orderBy('fecha_servicio', 'desc')
                 ->get();
         }

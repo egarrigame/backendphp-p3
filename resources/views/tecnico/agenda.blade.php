@@ -3,70 +3,84 @@
 @section('title', 'Mi Agenda - ReparaYa')
 
 @section('content')
-<div class="row mb-4">
-    <div class="col-12">
-        <h2>Mi Agenda</h2>
-        <p class="text-muted">Incidencias asignadas</p>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">🧰 Mi agenda</h2>
     </div>
-</div>
 
-@if($tecnico)
-<div class="card">
-    <div class="card-body">
+    <p class="mb-4">
+        Bienvenido, <strong>{{ session('user.nombre') }}</strong>
+    </p>
+
+    @if(!$tecnico)
+        <div class="alert alert-warning">
+            No se encontró un perfil de técnico asociado a tu cuenta.
+        </div>
+    @elseif($incidencias->isEmpty())
+        <div class="alert alert-info">
+            No tienes incidencias asignadas.
+        </div>
+    @else
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-hover align-middle">
                 <thead>
                     <tr>
+                        <th>Fecha</th>
                         <th>Localizador</th>
-                        <th>Especialidad</th>
-                        <th>Descripción</th>
+                        <th>Cliente</th>
+                        <th>Contacto</th>
+                        <th>Servicio</th>
                         <th>Dirección</th>
-                        <th>Fecha Servicio</th>
                         <th>Urgencia</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($incidencias as $incidencia)
-                        <tr class="{{ $incidencia->tipo_urgencia === 'urgente' ? 'table-danger' : 'table-success' }}">
+                    @foreach($incidencias as $incidencia)
+                        @php
+                            $urgente = strtolower($incidencia->tipo_urgencia) === 'urgente';
+                            $filaClase = $urgente ? 'fila-urgente' : 'fila-estandar';
+                            $estado = $incidencia->estado->nombre_estado ?? '';
+                            $estadoClass = match($estado) {
+                                'Pendiente' => 'bg-warning text-dark',
+                                'Asignada' => 'bg-primary',
+                                'Finalizada' => 'bg-success',
+                                'Cancelada' => 'bg-danger',
+                                default => 'bg-secondary',
+                            };
+                        @endphp
+                        <tr class="{{ $filaClase }}">
+                            <td>
+                                {{ $incidencia->fecha_servicio ? $incidencia->fecha_servicio->format('d/m/Y') : '—' }}<br>
+                                <small class="text-muted">
+                                    {{ $incidencia->fecha_servicio ? $incidencia->fecha_servicio->format('H:i') : '' }}
+                                </small>
+                            </td>
                             <td><strong>{{ $incidencia->localizador }}</strong></td>
-                            <td>{{ $incidencia->especialidad ? $incidencia->especialidad->nombre_especialidad : 'N/A' }}</td>
-                            <td>{{ Str::limit($incidencia->descripcion, 50) }}</td>
+                            <td>{{ $incidencia->cliente->nombre ?? 'N/A' }}</td>
+                            <td>
+                                @if($incidencia->cliente && $incidencia->cliente->telefono)
+                                    <a href="tel:{{ $incidencia->cliente->telefono }}" class="btn btn-sm btn-outline-primary">
+                                        📞 {{ $incidencia->cliente->telefono }}
+                                    </a>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
+                            <td>{{ $incidencia->especialidad->nombre_especialidad ?? 'N/A' }}</td>
                             <td>{{ $incidencia->direccion }}</td>
-                            <td>{{ $incidencia->fecha_servicio ? \Carbon\Carbon::parse($incidencia->fecha_servicio)->format('d/m/Y H:i') : 'N/A' }}</td>
                             <td>
-                                <span class="badge {{ $incidencia->tipo_urgencia === 'urgente' ? 'bg-danger' : 'bg-success' }}">
-                                    {{ ucfirst($incidencia->tipo_urgencia) }}
+                                <span class="badge {{ $urgente ? 'bg-danger' : 'bg-success' }}">
+                                    {{ $urgente ? 'Urgente' : 'Estándar' }}
                                 </span>
                             </td>
                             <td>
-                                @php
-                                    $badgeClass = match($incidencia->estado?->nombre_estado) {
-                                        'Pendiente' => 'bg-warning',
-                                        'Asignada' => 'bg-primary',
-                                        'Finalizada' => 'bg-success',
-                                        'Cancelada' => 'bg-danger',
-                                        default => 'bg-secondary',
-                                    };
-                                @endphp
-                                <span class="badge {{ $badgeClass }}">
-                                    {{ $incidencia->estado ? $incidencia->estado->nombre_estado : 'N/A' }}
-                                </span>
+                                <span class="badge {{ $estadoClass }}">{{ $estado }}</span>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="text-center text-muted">No tienes incidencias asignadas.</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-@else
-<div class="alert alert-warning">
-    No se encontró un perfil de técnico asociado a tu cuenta.
-</div>
-@endif
+    @endif
 @endsection
