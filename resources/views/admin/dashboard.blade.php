@@ -15,10 +15,10 @@
     <div class="row g-3">
         <div class="col-md-4">
             <div class="card dashboard-card h-100">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5>🛠️ Crear incidencia</h5>
                     <p class="text-muted">Registrar una nueva incidencia manualmente.</p>
-                    <a href="{{ url('producto3/admin/crear-incidencia') }}" class="btn btn-primary w-100">
+                    <a href="{{ url('producto3/admin/crear-incidencia') }}" class="btn btn-primary w-100 mt-auto">
                         Crear
                     </a>
                 </div>
@@ -27,10 +27,10 @@
 
         <div class="col-md-4">
             <div class="card dashboard-card h-100">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5>📋 Gestión de incidencias</h5>
                     <p class="text-muted">Asignar técnicos y controlar estados.</p>
-                    <a href="{{ url('producto3/admin/incidencias') }}" class="btn btn-warning w-100">
+                    <a href="{{ url('producto3/admin/incidencias') }}" class="btn btn-warning w-100 mt-auto">
                         Gestionar
                     </a>
                 </div>
@@ -39,11 +39,10 @@
 
         <div class="col-md-4">
             <div class="card dashboard-card h-100">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5>📅 Calendario</h5>
                     <p class="text-muted">Visualizar incidencias por fecha.</p>
-                    <br>
-                    <a href="{{ url('producto3/admin/calendario') }}" class="btn btn-success w-100">
+                    <a href="{{ url('producto3/admin/calendario') }}" class="btn btn-success w-100 mt-auto">
                         Ver calendario
                     </a>
                 </div>
@@ -52,10 +51,10 @@
 
         <div class="col-md-4">
             <div class="card dashboard-card h-100">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5>👷 Técnicos</h5>
                     <p class="text-muted">Gestionar técnicos disponibles.</p>
-                    <a href="{{ url('producto3/tecnicos') }}" class="btn btn-secondary w-100">
+                    <a href="{{ url('producto3/tecnicos') }}" class="btn btn-secondary w-100 mt-auto">
                         Ver técnicos
                     </a>
                 </div>
@@ -64,10 +63,10 @@
 
         <div class="col-md-4">
             <div class="card dashboard-card h-100">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5>⚙️ Especialidades</h5>
                     <p class="text-muted">Configurar tipos de servicio.</p>
-                    <a href="{{ url('producto3/especialidades') }}" class="btn btn-info w-100">
+                    <a href="{{ url('producto3/especialidades') }}" class="btn btn-info w-100 mt-auto">
                         Gestionar
                     </a>
                 </div>
@@ -76,10 +75,10 @@
 
         <div class="col-md-4">
             <div class="card dashboard-card h-100">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5>🏢 Gestoras</h5>
                     <p class="text-muted">Empresas gestoras B2B y comisiones.</p>
-                    <a href="{{ url('producto3/admin/gestoras') }}" class="btn btn-dark w-100">
+                    <a href="{{ url('producto3/admin/gestoras') }}" class="btn btn-dark w-100 mt-auto">
                         Ver gestoras
                     </a>
                 </div>
@@ -88,10 +87,10 @@
 
         <div class="col-md-4">
             <div class="card dashboard-card h-100">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5>💰 Liquidación Mensual</h5>
                     <p class="text-muted">Comisiones y pagos pendientes.</p>
-                    <a href="{{ url('producto3/admin/liquidacion-mensual') }}" class="btn btn-outline-primary w-100">
+                    <a href="{{ url('producto3/admin/liquidacion-mensual') }}" class="btn btn-outline-primary w-100 mt-auto">
                         Ver liquidación
                     </a>
                 </div>
@@ -100,10 +99,10 @@
 
         <div class="col-md-4">
             <div class="card dashboard-card h-100">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5>🚪 Sesión</h5>
                     <p class="text-muted">Cerrar sesión del sistema.</p>
-                    <a href="{{ url('producto3/logout') }}" class="btn btn-danger w-100">
+                    <a href="{{ url('producto3/logout') }}" class="btn btn-danger w-100 mt-auto">
                         Cerrar sesión
                     </a>
                 </div>
