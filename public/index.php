@@ -1,72 +1,40 @@
 <?php
 
-declare(strict_types=1);
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
 
-session_start();
+define('LARAVEL_START', microtime(true));
 
 /*
 |--------------------------------------------------------------------------
-| Cargar variables del archivo .env manualmente
+| Check If The Application Is Under Maintenance
 |--------------------------------------------------------------------------
 */
-$envPath = dirname(__DIR__) . '/.env';
 
-if (file_exists($envPath)) {
-    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-    foreach ($lines as $line) {
-        $line = trim($line);
-
-        if ($line === '' || str_starts_with($line, '#')) {
-            continue;
-        }
-
-        [$key, $value] = array_pad(explode('=', $line, 2), 2, null);
-
-        if ($key !== null && $value !== null) {
-            $_ENV[trim($key)] = trim($value);
-        }
-    }
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
 }
 
 /*
 |--------------------------------------------------------------------------
-| Core
+| Register The Auto Loader
 |--------------------------------------------------------------------------
 */
-require_once dirname(__DIR__) . '/core/Router.php';
-require_once dirname(__DIR__) . '/core/Controller.php';
-require_once dirname(__DIR__) . '/core/Model.php';
+
+require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
-| Modelos
+| Run The Application
 |--------------------------------------------------------------------------
 */
-require_once dirname(__DIR__) . '/models/User.php';
-require_once dirname(__DIR__) . '/models/Tecnico.php';
-require_once dirname(__DIR__) . '/models/Especialidad.php';
-require_once dirname(__DIR__) . '/models/Incidencia.php';
 
-/*
-|--------------------------------------------------------------------------
-| Controladores
-|--------------------------------------------------------------------------
-*/
-require_once dirname(__DIR__) . '/controllers/AuthController.php';
-require_once dirname(__DIR__) . '/controllers/UserController.php';
-require_once dirname(__DIR__) . '/controllers/IncidenciaController.php';
-require_once dirname(__DIR__) . '/controllers/AdminController.php';
-require_once dirname(__DIR__) . '/controllers/TecnicoController.php';
-require_once dirname(__DIR__) . '/controllers/EspecialidadController.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
-/*
-|--------------------------------------------------------------------------
-| Router y rutas
-|--------------------------------------------------------------------------
-*/
-$router = new Router();
+$kernel = $app->make(Kernel::class);
 
-require_once dirname(__DIR__) . '/app/routes/web.php';
+$response = $kernel->handle(
+    $request = Request::capture()
+)->send();
 
-$router->resolve($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+$kernel->terminate($request, $response);
