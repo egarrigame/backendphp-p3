@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('/producto3/login');
+    return redirect('/login');
 });
 
 // Auth routes (public)
