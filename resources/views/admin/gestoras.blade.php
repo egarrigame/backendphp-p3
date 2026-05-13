@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Gestión de Gestoras</h2>
-        <a href="{{ url('producto3/admin/gestoras/crear') }}" class="btn btn-primary">Nueva Gestora</a>
+        <a href="{{ url('admin/gestoras/crear') }}" class="btn btn-primary">Nueva Gestora</a>
     </div>
 
     <div class="table-responsive">
@@ -34,8 +34,8 @@
                         </td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="{{ url('producto3/admin/gestoras/editar/' . $gestora->id) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
-                                <a href="{{ url('producto3/admin/gestoras/' . $gestora->id . '/comisiones') }}" class="btn btn-sm btn-outline-primary">Ver Comisiones</a>
+                                <a href="{{ url('admin/gestoras/editar/' . $gestora->id) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                <a href="{{ url('admin/gestoras/' . $gestora->id . '/comisiones') }}" class="btn btn-sm btn-outline-primary">Ver Comisiones</a>
                             </div>
                         </td>
                     </tr>

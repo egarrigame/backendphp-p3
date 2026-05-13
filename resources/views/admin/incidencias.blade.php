@@ -96,7 +96,7 @@
 
                         <!-- ASIGNAR -->
                         @if(in_array($estado, ['Pendiente', 'Asignada']))
-                            <form method="POST" action="{{ url('/producto3/admin/asignar-tecnico') }}" class="mb-2 d-flex gap-1">
+                            <form method="POST" action="{{ url('/admin/asignar-tecnico') }}" class="mb-2 d-flex gap-1">
                                 @csrf
                                 <input type="hidden" name="incidencia_id" value="{{ $incidencia->id }}">
                                 <select name="tecnico_id" class="form-select form-select-sm">
@@ -116,13 +116,13 @@
                         <!-- BOTONES -->
                         <div class="d-flex gap-1">
 
-                            <a href="{{ url('/producto3/admin/editar-incidencia/' . $incidencia->id) }}"
+                            <a href="{{ url('/admin/editar-incidencia/' . $incidencia->id) }}"
                                class="btn btn-warning btn-sm">
                                 ✏️
                             </a>
 
                             @if($estado !== 'Cancelada')
-                                <form method="POST" action="{{ url('/producto3/admin/cancelar-incidencia') }}">
+                                <form method="POST" action="{{ url('/admin/cancelar-incidencia') }}">
                                     @csrf
                                     <input type="hidden" name="incidencia_id" value="{{ $incidencia->id }}">
                                     <button class="btn btn-danger btn-sm"

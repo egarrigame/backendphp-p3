@@ -1,5 +1,9 @@
 <?php
 
+if (!class_exists('DOMDocument')) {
+    require_once __DIR__.'/../app/Overrides/DomStub.php';
+}
+
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 

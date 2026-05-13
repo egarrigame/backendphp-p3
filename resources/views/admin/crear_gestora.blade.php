@@ -9,7 +9,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ url('producto3/admin/gestoras/crear') }}" method="POST">
+            <form action="{{ url('admin/gestoras/crear') }}" method="POST">
                 @csrf
 
                 <div class="mb-3">
@@ -49,7 +49,7 @@
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">Crear Gestora</button>
-                    <a href="{{ url('producto3/admin/gestoras') }}" class="btn btn-secondary">Cancelar</a>
+                    <a href="{{ url('admin/gestoras') }}" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
         </div>

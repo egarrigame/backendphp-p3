@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">📋 Mis avisos</h2>
 
-        <a href="{{ url('/producto3/cliente/nueva-incidencia') }}" class="btn btn-primary">
+        <a href="{{ url('/cliente/nueva-incidencia') }}" class="btn btn-primary">
             ➕ Nueva incidencia
         </a>
     </div>
@@ -121,7 +121,7 @@
                         <td>
 
                             @if($estadoNombre === 'Pendiente' && $puedeCancelar)
-                                <form method="POST" action="{{ url('/producto3/cliente/cancelar-incidencia') }}">
+                                <form method="POST" action="{{ url('/cliente/cancelar-incidencia') }}">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $incidencia->id }}">
 

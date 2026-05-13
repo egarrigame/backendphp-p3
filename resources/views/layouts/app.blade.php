@@ -17,16 +17,16 @@
         <div class="container">
             @if(session('user'))
                 @if(session('user.rol') === 'admin')
-                    <a class="navbar-brand" href="{{ url('producto3/admin/dashboard') }}">ReparaYa - Admin</a>
+                    <a class="navbar-brand" href="{{ url('admin/dashboard') }}">ReparaYa - Admin</a>
                 @elseif(session('user.rol') === 'tecnico')
-                    <a class="navbar-brand" href="{{ url('producto3/tecnico/agenda') }}">ReparaYa - Técnico</a>
+                    <a class="navbar-brand" href="{{ url('tecnico/agenda') }}">ReparaYa - Técnico</a>
                 @else
-                    <a class="navbar-brand" href="{{ url('producto3/cliente/dashboard') }}">ReparaYa</a>
+                    <a class="navbar-brand" href="{{ url('cliente/dashboard') }}">ReparaYa</a>
                 @endif
             @elseif(session('gestora'))
-                <a class="navbar-brand" href="{{ url('producto3/gestora/dashboard') }}">ReparaYa - Gestora</a>
+                <a class="navbar-brand" href="{{ url('gestora/dashboard') }}">ReparaYa - Gestora</a>
             @else
-                <a class="navbar-brand" href="{{ url('producto3/') }}">ReparaYa</a>
+                <a class="navbar-brand" href="{{ url('') }}">ReparaYa</a>
             @endif
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 ☰
@@ -36,50 +36,50 @@
                     @if(session('user'))
                         @if(session('user.rol') === 'admin')
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/admin/dashboard') }}">Dashboard</a>
+                                <a class="nav-link" href="{{ url('admin/dashboard') }}">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/admin/incidencias') }}">Incidencias</a>
+                                <a class="nav-link" href="{{ url('admin/incidencias') }}">Incidencias</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/admin/calendario') }}">Calendario</a>
+                                <a class="nav-link" href="{{ url('admin/calendario') }}">Calendario</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/tecnicos') }}">Técnicos</a>
+                                <a class="nav-link" href="{{ url('tecnicos') }}">Técnicos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/especialidades') }}">Especialidades</a>
+                                <a class="nav-link" href="{{ url('especialidades') }}">Especialidades</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/admin/gestoras') }}">Gestoras</a>
+                                <a class="nav-link" href="{{ url('admin/gestoras') }}">Gestoras</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/admin/liquidacion-mensual') }}">Liquidación Mensual</a>
+                                <a class="nav-link" href="{{ url('admin/liquidacion-mensual') }}">Liquidación Mensual</a>
                             </li>
                         @elseif(session('user.rol') === 'tecnico')
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/tecnico/agenda') }}">Mi Agenda</a>
+                                <a class="nav-link" href="{{ url('tecnico/agenda') }}">Mi Agenda</a>
                             </li>
                         @elseif(session('user.rol') === 'particular')
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/cliente/dashboard') }}">Dashboard</a>
+                                <a class="nav-link" href="{{ url('cliente/dashboard') }}">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/cliente/mis-avisos') }}">Mis Avisos</a>
+                                <a class="nav-link" href="{{ url('cliente/mis-avisos') }}">Mis Avisos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('producto3/cliente/nueva-incidencia') }}">Nueva Incidencia</a>
+                                <a class="nav-link" href="{{ url('cliente/nueva-incidencia') }}">Nueva Incidencia</a>
                             </li>
                         @endif
                     @elseif(session('gestora'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('producto3/gestora/dashboard') }}">Dashboard</a>
+                            <a class="nav-link" href="{{ url('gestora/dashboard') }}">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('producto3/gestora/crear-aviso') }}">Crear Aviso</a>
+                            <a class="nav-link" href="{{ url('gestora/crear-aviso') }}">Crear Aviso</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('producto3/gestora/liquidaciones') }}">Liquidaciones</a>
+                            <a class="nav-link" href="{{ url('gestora/liquidaciones') }}">Liquidaciones</a>
                         </li>
                     @endif
                 </ul>
@@ -89,17 +89,17 @@
                             <span class="nav-link">{{ session('user.nombre') }}</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('producto3/perfil') }}">Perfil</a>
+                            <a class="nav-link" href="{{ url('perfil') }}">Perfil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn" href="{{ url('producto3/logout') }}">Salir</a>
+                            <a class="btn" href="{{ url('logout') }}">Salir</a>
                         </li>
                     @elseif(session('gestora'))
                         <li class="nav-item">
                             <span class="nav-link">{{ session('gestora.nombre') }}</span>
                         </li>
                         <li class="nav-item">
-                            <a class="btn" href="{{ url('producto3/logout') }}">Salir</a>
+                            <a class="btn" href="{{ url('logout') }}">Salir</a>
                         </li>
                     @endif
                 </ul>

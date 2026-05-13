@@ -26,7 +26,7 @@
     <!-- FORM -->
     <div class="card p-4">
 
-        <form method="POST" action="{{ url('/producto3/cliente/nueva-incidencia') }}">
+        <form method="POST" action="{{ url('/cliente/nueva-incidencia') }}">
             @csrf
 
             <div class="row">
@@ -93,7 +93,7 @@
             <!-- BOTONES -->
             <div class="d-flex justify-content-end gap-2 mt-3">
 
-                <a href="{{ url('/producto3/cliente/dashboard') }}" class="btn btn-secondary">
+                <a href="{{ url('/cliente/dashboard') }}" class="btn btn-secondary">
                     Volver
                 </a>
 

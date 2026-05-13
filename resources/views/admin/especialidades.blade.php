@@ -27,7 +27,7 @@
     <div class="card p-3 mb-4">
         <h5 class="mb-3">➕ Nueva especialidad</h5>
 
-        <form method="POST" action="{{ url('/producto3/especialidades/guardar') }}" class="d-flex gap-2">
+        <form method="POST" action="{{ url('/especialidades/guardar') }}" class="d-flex gap-2">
             @csrf
 
             <input type="text"
@@ -80,7 +80,7 @@
                         <!-- NOMBRE EDITABLE -->
                         <td>
                             <form method="POST"
-                                  action="{{ url('/producto3/especialidades/actualizar/' . $especialidad->id) }}"
+                                  action="{{ url('/especialidades/actualizar/' . $especialidad->id) }}"
                                   class="d-flex gap-2">
                                 @csrf
 
@@ -101,7 +101,7 @@
                         <td>
 
                             <form method="POST"
-                                  action="{{ url('/producto3/especialidades/eliminar/' . $especialidad->id) }}"
+                                  action="{{ url('/especialidades/eliminar/' . $especialidad->id) }}"
                                   onsubmit="return confirm('¿Eliminar esta especialidad?');">
                                 @csrf
 

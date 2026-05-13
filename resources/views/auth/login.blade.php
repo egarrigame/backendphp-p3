@@ -5,7 +5,7 @@
 @section('content')
     <h3 class="text-center mb-4">Iniciar Sesión</h3>
 
-    <form method="POST" action="{{ url('/producto3/login') }}">
+    <form method="POST" action="{{ url('/login') }}">
         @csrf
 
         <div class="mb-3">
@@ -24,6 +24,6 @@
     </form>
 
     <div class="text-center mt-3">
-        <a href="{{ url('/producto3/register') }}">¿No tienes cuenta? Regístrate</a>
+        <a href="{{ url('/register') }}">¿No tienes cuenta? Regístrate</a>
     </div>
 @endsection

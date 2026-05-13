@@ -14,7 +14,7 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <form action="{{ url('/producto3/gestora/crear-aviso') }}" method="POST">
+                <form action="{{ url('/gestora/crear-aviso') }}" method="POST">
                     @csrf
 
                     <div class="mb-3">
@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <a href="{{ url('/producto3/gestora/dashboard') }}" class="btn btn-secondary">Cancelar</a>
+                        <a href="{{ url('/gestora/dashboard') }}" class="btn btn-secondary">Cancelar</a>
                         <button type="submit" class="btn btn-primary">Crear Aviso</button>
                     </div>
                 </form>

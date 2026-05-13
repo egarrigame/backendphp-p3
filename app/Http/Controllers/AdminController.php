@@ -94,7 +94,7 @@ class AdminController extends Controller
             'precio_base' => $precioBase,
         ]);
 
-        return redirect('/producto3/admin/incidencias')->with('success', 'Incidencia creada correctamente.');
+        return redirect('/admin/incidencias')->with('success', 'Incidencia creada correctamente.');
     }
 
     /**
@@ -161,7 +161,7 @@ class AdminController extends Controller
             Comision::where('incidencia_id', $id)->delete();
         }
 
-        return redirect('/producto3/admin/incidencias')->with('success', 'Incidencia actualizada correctamente.');
+        return redirect('/admin/incidencias')->with('success', 'Incidencia actualizada correctamente.');
     }
 
     /**
@@ -182,7 +182,7 @@ class AdminController extends Controller
             'estado_id' => $estadoAsignada->id,
         ]);
 
-        return redirect('/producto3/admin/incidencias')->with('success', 'Técnico asignado correctamente.');
+        return redirect('/admin/incidencias')->with('success', 'Técnico asignado correctamente.');
     }
 
     /**
@@ -201,7 +201,7 @@ class AdminController extends Controller
             'estado_id' => $estadoCancelada->id,
         ]);
 
-        return redirect('/producto3/admin/incidencias')->with('success', 'Incidencia cancelada correctamente.');
+        return redirect('/admin/incidencias')->with('success', 'Incidencia cancelada correctamente.');
     }
 
     /**
@@ -269,7 +269,7 @@ class AdminController extends Controller
             'activa' => true,
         ]);
 
-        return redirect('/producto3/admin/gestoras')->with('success', 'Gestora creada correctamente.');
+        return redirect('/admin/gestoras')->with('success', 'Gestora creada correctamente.');
     }
 
     /**
@@ -312,7 +312,7 @@ class AdminController extends Controller
 
         $gestora->update($data);
 
-        return redirect('/producto3/admin/gestoras')->with('success', 'Gestora actualizada correctamente.');
+        return redirect('/admin/gestoras')->with('success', 'Gestora actualizada correctamente.');
     }
 
     /**

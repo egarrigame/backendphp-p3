@@ -108,7 +108,7 @@ class ClienteController extends Controller
             'precio_base' => $precioBase,
         ]);
 
-        return redirect('/producto3/cliente/mis-avisos')
+        return redirect('/cliente/mis-avisos')
             ->with('success', 'Incidencia creada correctamente. Localizador: ' . $localizador);
     }
 
@@ -135,7 +135,7 @@ class ClienteController extends Controller
         $estadoCancelada = Estado::where('nombre_estado', 'Cancelada')->first()->id;
         $incidencia->update(['estado_id' => $estadoCancelada]);
 
-        return redirect('/producto3/cliente/mis-avisos')
+        return redirect('/cliente/mis-avisos')
             ->with('success', 'Incidencia cancelada correctamente.');
     }
 }

@@ -34,7 +34,7 @@
             <div class="card h-100 p-3">
                 <h5>📋 Mis avisos</h5>
                 <p>Consulta todas tus incidencias pasadas y futuras.</p>
-                <a href="{{ url('/producto3/cliente/mis-avisos') }}" class="btn btn-primary">
+                <a href="{{ url('/cliente/mis-avisos') }}" class="btn btn-primary">
                     Ver avisos
                 </a>
             </div>
@@ -46,7 +46,7 @@
                 <h5>➕ Nueva incidencia</h5>
                 <p>Solicita un técnico para una avería.</p>
                 <br>
-                <a href="{{ url('/producto3/cliente/nueva-incidencia') }}" class="btn btn-success">
+                <a href="{{ url('/cliente/nueva-incidencia') }}" class="btn btn-success">
                     Crear
                 </a>
             </div>
@@ -58,7 +58,7 @@
                 <h5>👤 Perfil</h5>
                 <p>Modifica tus datos personales.</p>
                 <br>
-                <a href="{{ url('/producto3/perfil') }}" class="btn btn-warning">
+                <a href="{{ url('/perfil') }}" class="btn btn-warning">
                     Editar perfil
                 </a>
             </div>
@@ -69,7 +69,7 @@
             <div class="card h-100 p-3">
                 <h5>🔒 Sesión</h5>
                 <p>Cerrar sesión del sistema.</p>
-                <a href="{{ url('/producto3/logout') }}" class="btn btn-danger">
+                <a href="{{ url('/logout') }}" class="btn btn-danger">
                     Cerrar sesión
                 </a>
             </div>

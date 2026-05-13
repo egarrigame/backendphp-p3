@@ -38,7 +38,7 @@
                 <div class="fs-1 mb-2">📋</div>
                 <h5 class="card-title">Crear Aviso</h5>
                 <p class="card-text text-muted">Crear un nuevo aviso de reparación para un residente</p>
-                <a href="{{ url('/producto3/gestora/crear-aviso') }}" class="btn btn-primary">Nuevo Aviso</a>
+                <a href="{{ url('/gestora/crear-aviso') }}" class="btn btn-primary">Nuevo Aviso</a>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
                 <div class="fs-1 mb-2">💰</div>
                 <h5 class="card-title">Liquidaciones</h5>
                 <p class="card-text text-muted">Consulta tus comisiones y liquidaciones mensuales</p>
-                <a href="{{ url('/producto3/gestora/liquidaciones') }}" class="btn btn-primary">Ver Liquidaciones</a>
+                <a href="{{ url('/gestora/liquidaciones') }}" class="btn btn-primary">Ver Liquidaciones</a>
             </div>
         </div>
     </div>

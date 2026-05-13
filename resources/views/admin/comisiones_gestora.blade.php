@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Comisiones: {{ $gestora->nombre }}</h2>
-        <a href="{{ url('producto3/admin/gestoras') }}" class="btn btn-secondary">Volver a Gestoras</a>
+        <a href="{{ url('admin/gestoras') }}" class="btn btn-secondary">Volver a Gestoras</a>
     </div>
 
     <div class="card mb-4">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-md-3 text-end">
                     @if($totalPendiente > 0)
-                        <form action="{{ url('producto3/admin/gestoras/' . $gestora->id . '/marcar-pagada') }}" method="POST" onsubmit="return confirm('¿Marcar todas las comisiones pendientes de este mes como pagadas?')">
+                        <form action="{{ url('admin/gestoras/' . $gestora->id . '/marcar-pagada') }}" method="POST" onsubmit="return confirm('¿Marcar todas las comisiones pendientes de este mes como pagadas?')">
                             @csrf
                             <input type="hidden" name="mes" value="{{ now()->startOfMonth()->toDateString() }}">
                             <button type="submit" class="btn btn-success btn-sm">Marcar como pagada</button>

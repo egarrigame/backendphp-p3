@@ -19,7 +19,7 @@ class AuthController extends Controller
         }
 
         if (session('gestora')) {
-            return redirect('/producto3/gestora/dashboard');
+            return redirect('/gestora/dashboard');
         }
 
         return view('auth.login');
@@ -79,7 +79,7 @@ class AuthController extends Controller
                     ]
                 ]);
 
-                return redirect('/producto3/gestora/dashboard');
+                return redirect('/gestora/dashboard');
             }
         }
 
@@ -116,7 +116,7 @@ class AuthController extends Controller
             'rol' => 'particular',
         ]);
 
-        return redirect('/producto3/login')->with('success', 'Registro exitoso. Inicia sesión.');
+        return redirect('/login')->with('success', 'Registro exitoso. Inicia sesión.');
     }
 
     /**
@@ -126,7 +126,7 @@ class AuthController extends Controller
     {
         session()->flush();
 
-        return redirect('/producto3/login');
+        return redirect('/login');
     }
 
     /**
@@ -135,10 +135,10 @@ class AuthController extends Controller
     private function redirectByRole(string $rol)
     {
         return match ($rol) {
-            'admin' => redirect('/producto3/admin/dashboard'),
-            'tecnico' => redirect('/producto3/tecnico/agenda'),
-            'particular' => redirect('/producto3/cliente/dashboard'),
-            default => redirect('/producto3/login'),
+            'admin' => redirect('/admin/dashboard'),
+            'tecnico' => redirect('/tecnico/agenda'),
+            'particular' => redirect('/cliente/dashboard'),
+            default => redirect('/login'),
         };
     }
 }

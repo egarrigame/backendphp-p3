@@ -37,7 +37,7 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{{ url('producto3/admin/gestoras/' . $liquidacion->gestora->id . '/comisiones') }}" class="btn btn-sm btn-outline-primary">Ver Detalle</a>
+                            <a href="{{ url('admin/gestoras/' . $liquidacion->gestora->id . '/comisiones') }}" class="btn btn-sm btn-outline-primary">Ver Detalle</a>
                         </td>
                     </tr>
                 @empty

@@ -18,7 +18,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5>🛠️ Crear incidencia</h5>
                     <p class="text-muted">Registrar una nueva incidencia manualmente.</p>
-                    <a href="{{ url('producto3/admin/crear-incidencia') }}" class="btn btn-primary w-100 mt-auto">
+                    <a href="{{ url('admin/crear-incidencia') }}" class="btn btn-primary w-100 mt-auto">
                         Crear
                     </a>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5>📋 Gestión de incidencias</h5>
                     <p class="text-muted">Asignar técnicos y controlar estados.</p>
-                    <a href="{{ url('producto3/admin/incidencias') }}" class="btn btn-warning w-100 mt-auto">
+                    <a href="{{ url('admin/incidencias') }}" class="btn btn-warning w-100 mt-auto">
                         Gestionar
                     </a>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5>📅 Calendario</h5>
                     <p class="text-muted">Visualizar incidencias por fecha.</p>
-                    <a href="{{ url('producto3/admin/calendario') }}" class="btn btn-success w-100 mt-auto">
+                    <a href="{{ url('admin/calendario') }}" class="btn btn-success w-100 mt-auto">
                         Ver calendario
                     </a>
                 </div>
@@ -54,7 +54,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5>👷 Técnicos</h5>
                     <p class="text-muted">Gestionar técnicos disponibles.</p>
-                    <a href="{{ url('producto3/tecnicos') }}" class="btn btn-secondary w-100 mt-auto">
+                    <a href="{{ url('tecnicos') }}" class="btn btn-secondary w-100 mt-auto">
                         Ver técnicos
                     </a>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5>⚙️ Especialidades</h5>
                     <p class="text-muted">Configurar tipos de servicio.</p>
-                    <a href="{{ url('producto3/especialidades') }}" class="btn btn-info w-100 mt-auto">
+                    <a href="{{ url('especialidades') }}" class="btn btn-info w-100 mt-auto">
                         Gestionar
                     </a>
                 </div>
@@ -78,7 +78,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5>🏢 Gestoras</h5>
                     <p class="text-muted">Empresas gestoras B2B y comisiones.</p>
-                    <a href="{{ url('producto3/admin/gestoras') }}" class="btn btn-dark w-100 mt-auto">
+                    <a href="{{ url('admin/gestoras') }}" class="btn btn-dark w-100 mt-auto">
                         Ver gestoras
                     </a>
                 </div>
@@ -90,7 +90,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5>💰 Liquidación Mensual</h5>
                     <p class="text-muted">Comisiones y pagos pendientes.</p>
-                    <a href="{{ url('producto3/admin/liquidacion-mensual') }}" class="btn btn-outline-primary w-100 mt-auto">
+                    <a href="{{ url('admin/liquidacion-mensual') }}" class="btn btn-outline-primary w-100 mt-auto">
                         Ver liquidación
                     </a>
                 </div>
@@ -102,7 +102,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5>🚪 Sesión</h5>
                     <p class="text-muted">Cerrar sesión del sistema.</p>
-                    <a href="{{ url('producto3/logout') }}" class="btn btn-danger w-100 mt-auto">
+                    <a href="{{ url('logout') }}" class="btn btn-danger w-100 mt-auto">
                         Cerrar sesión
                     </a>
                 </div>

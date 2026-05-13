@@ -27,7 +27,7 @@
     <div class="card mb-4 p-4">
         <h5 class="mb-3">➕ Nuevo técnico</h5>
 
-        <form method="POST" action="{{ url('/producto3/tecnicos/guardar') }}">
+        <form method="POST" action="{{ url('/tecnicos/guardar') }}">
             @csrf
             <div class="row g-2">
 
@@ -100,7 +100,7 @@
                         <td>
 
                             <!-- EDITAR -->
-                            <form method="POST" action="{{ url('/producto3/tecnicos/actualizar/' . $tecnico->id) }}"
+                            <form method="POST" action="{{ url('/tecnicos/actualizar/' . $tecnico->id) }}"
                                   class="d-flex gap-1 mb-2">
                                 @csrf
 
@@ -129,7 +129,7 @@
                             </form>
 
                             <!-- ELIMINAR -->
-                            <form method="POST" action="{{ url('/producto3/tecnicos/eliminar/' . $tecnico->id) }}"
+                            <form method="POST" action="{{ url('/tecnicos/eliminar/' . $tecnico->id) }}"
                                   onsubmit="return confirm('¿Eliminar técnico?');">
                                 @csrf
 

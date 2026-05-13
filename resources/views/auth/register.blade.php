@@ -5,7 +5,7 @@
 @section('content')
     <h3 class="text-center mb-4">Registro</h3>
 
-    <form method="POST" action="{{ url('/producto3/register') }}">
+    <form method="POST" action="{{ url('/register') }}">
         @csrf
 
         <div class="mb-3">
@@ -34,6 +34,6 @@
     </form>
 
     <div class="text-center mt-3">
-        <a href="{{ url('/producto3/login') }}">¿Ya tienes cuenta? Inicia sesión</a>
+        <a href="{{ url('/login') }}">¿Ya tienes cuenta? Inicia sesión</a>
     </div>
 @endsection

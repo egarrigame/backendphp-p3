@@ -119,7 +119,7 @@ class GestoraController extends Controller
             'precio_base' => $precioBase,
         ]);
 
-        return redirect('/producto3/gestora/dashboard')
+        return redirect('/gestora/dashboard')
             ->with('success', 'Aviso creado correctamente. Localizador: ' . $localizador);
     }
 

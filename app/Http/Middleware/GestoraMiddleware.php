@@ -14,7 +14,7 @@ class GestoraMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!session('gestora')) {
-            return redirect('/producto3/login');
+            return redirect('/login');
         }
 
         return $next($request);

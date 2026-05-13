@@ -15,7 +15,7 @@ class UserController extends Controller
         $user = User::find(session('user.id'));
 
         if (!$user) {
-            return redirect(url('/producto3/login'))->with('error', 'Usuario no encontrado.');
+            return redirect(url('/login'))->with('error', 'Usuario no encontrado.');
         }
 
         return view('user.perfil', compact('user'));
@@ -29,7 +29,7 @@ class UserController extends Controller
         $user = User::find(session('user.id'));
 
         if (!$user) {
-            return redirect(url('/producto3/login'))->with('error', 'Usuario no encontrado.');
+            return redirect(url('/login'))->with('error', 'Usuario no encontrado.');
         }
 
         $request->validate([

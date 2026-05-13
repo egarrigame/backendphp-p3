@@ -26,7 +26,7 @@
     <!-- FORM -->
     <div class="card p-4">
 
-        <form method="POST" action="{{ url('/producto3/perfil') }}">
+        <form method="POST" action="{{ url('/perfil') }}">
             @csrf
 
             <div class="row">

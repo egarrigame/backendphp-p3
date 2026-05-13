@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ApiController extends Controller
 {
     /**
-     * GET /producto3/api/servicios/zonas
+     * GET /api/servicios/zonas
      *
      * Returns JSON array with finalized incidencias grouped by zona,
      * including nombre_zona, total_servicios, and porcentaje.
