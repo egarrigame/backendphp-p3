@@ -3,6 +3,10 @@
 @section('title', 'ReparaYa - Iniciar Sesión')
 
 @section('content')
+    <div class="text-center mb-4">
+        <h1 class="auth-logo">🛠️ ReparaYa</h1>
+    </div>
+
     <h3 class="text-center mb-4">Iniciar Sesión</h3>
 
     <form method="POST" action="{{ url('/login') }}">
