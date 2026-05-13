@@ -2,6 +2,49 @@
 
 Sistema de gestión de incidencias de reparación migrado a **Laravel 10** con módulo B2B para Empresas Gestoras (Administradores de Fincas), cálculo automático de comisiones y API REST.
 
+## Estructura de Ramas
+
+| Rama | Descripción |
+|---|---|
+| `main` | Producto 3 completo para desarrollo local. Usa prefijo `/producto3` en rutas y funciona con `php artisan serve` |
+| `leonardo` | Rama de desarrollo (sincronizada con main) |
+| `deploy-uoc` | **Versión adaptada al servidor UOC**. Sin prefijo en rutas, con DomStub para php-xml, session path `/`, CSRF deshabilitado |
+| `feature/*` | Ramas de funcionalidades individuales (historial de desarrollo) |
+
+### Diferencias entre `main` y `deploy-uoc`
+
+La rama `deploy-uoc` contiene adaptaciones específicas para el servidor UOC (`fp064.techlab.uoc.edu`) que no tiene `php-xml` instalado y usa `mod_userdir`:
+
+| Aspecto | `main` (local) | `deploy-uoc` (servidor) |
+|---|---|---|
+| Prefijo de rutas | `producto3` en RouteServiceProvider | Sin prefijo (el directorio ya lo proporciona) |
+| URLs en vistas/controllers | `url('producto3/admin/...')` | `url('admin/...')` |
+| Entry point | `public/index.php` | `index.php` en raíz con paths ajustados |
+| DOMDocument | Disponible (php-xml instalado) | Stub inline en `index.php` |
+| SCRIPT_NAME | Automático | Forzado a `/~uocx1/producto3/index.php` |
+| Session cookie path | `/producto3` | `/` |
+| CSRF | Habilitado | Deshabilitado (problemas de sesión en shared hosting) |
+| `.htaccess` | Rewrite a `public/$1` | Rewrite directo a `index.php` |
+| Seeders | `php artisan db:seed` | `php seed_production.php` (artisan no funciona sin php-xml) |
+
+### Para desarrollo local
+
+Usar la rama `main`:
+```bash
+git checkout main
+php artisan serve
+# Acceder a http://localhost:8000/producto3/login
+```
+
+### Para desplegar en el servidor UOC
+
+Usar la rama `deploy-uoc`:
+```bash
+git checkout deploy-uoc
+# Subir por SFTP a ~/public_html/producto3/
+# Ver docs/dificultades_despliegue.md para instrucciones detalladas
+```
+
 ## Descripción
 
 ReparaYa es una plataforma que conecta clientes con técnicos de reparación. La aplicación permite:
