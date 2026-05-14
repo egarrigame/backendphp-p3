@@ -34,6 +34,7 @@
 </head>
 <body>
     <div class="auth-container">
+        @yield('logo')
         <div class="auth-card">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show">

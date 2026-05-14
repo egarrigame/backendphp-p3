@@ -2,11 +2,13 @@
 
 @section('title', 'ReparaYa - Iniciar Sesión')
 
-@section('content')
+@section('logo')
     <div class="text-center mb-4">
         <h1 class="auth-logo">🛠️ ReparaYa</h1>
     </div>
+@endsection
 
+@section('content')
     <form method="POST" action="{{ url('/login') }}">
         @csrf
 
