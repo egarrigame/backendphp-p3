@@ -25,12 +25,12 @@ Migrar ReparaYa (Producto 2, PHP MVC puro) a Laravel 10, añadir módulo B2B par
 
 ```
 SSH:        ssh uocx1@fp064.techlab.uoc.edu -p 55000
-Password:   GMRFPtpR
+Password:   XXXXXXXX
 Web:        https://fp064.techlab.uoc.edu/~uocx1/producto3
 Carpeta:    ~/public_html/producto3/
 BD Host:    localhost
 BD User:    wordpress1
-BD Pass:    DWD8Ds3l4dvXpjZH
+BD Pass:    XXXXXXXX
 BD Name:    reparaya
 PHPMyAdmin: http://fp064.techlab.uoc.edu/bbdd/
 SFTP:       sftp -P 55000 uocx1@fp064.techlab.uoc.edu
