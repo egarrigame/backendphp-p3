@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="mb-4">
-        <h2>Liquidación Mensual</h2>
+        <h2>💰 Liquidación Mensual</h2>
     </div>
 
     <div class="card mb-4">

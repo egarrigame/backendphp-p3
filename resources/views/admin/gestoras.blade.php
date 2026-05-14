@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Gestión de Gestoras</h2>
+        <h2>🏢 Gestión de Gestoras</h2>
         <a href="{{ url('admin/gestoras/crear') }}" class="btn btn-primary">Nueva Gestora</a>
     </div>
 

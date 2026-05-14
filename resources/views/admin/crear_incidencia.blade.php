@@ -75,6 +75,19 @@
                     </select>
                 </div>
 
+                <!-- ZONA -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Zona</label>
+                    <select name="zona_id" class="form-select" required>
+                        <option value="">Seleccionar zona</option>
+                        @foreach($zonas as $zona)
+                            <option value="{{ $zona->id }}" {{ old('zona_id') == $zona->id ? 'selected' : '' }}>
+                                {{ $zona->nombre_zona }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <!-- DIRECCIÓN -->
                 <div class="col-12 mb-3">
                     <label class="form-label">Dirección</label>
